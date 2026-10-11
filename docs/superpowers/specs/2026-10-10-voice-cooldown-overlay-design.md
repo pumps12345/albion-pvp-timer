@@ -1,7 +1,7 @@
 # PVPTimer — Voice-Triggered Enemy Cooldown Overlay
 
 **Date:** 2026-10-10
-**Status:** Draft — awaiting review
+**Status:** Approved for initial build
 
 ## 1. Purpose
 
@@ -28,7 +28,7 @@ The app never reads game memory, injects into the game process, or inspects netw
 | On ready | Warning color before ready, then READY flash + beep, then fade out |
 | Database entry | Through an in-app editor UI; JSON on disk; defaults bundled for distribution |
 | Content focus | Small-scale / open world, Corrupted Dungeons / Hellgates |
-| Stack | Python 3.12, PySide6, Vosk |
+| Stack | Python 3.13, PySide6, Vosk |
 
 ## 2. Non-goals (v1)
 
