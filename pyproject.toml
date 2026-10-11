@@ -1,11 +1,14 @@
 [build-system]
-requires = ["setuptools>=69"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pvptimer"
 version = "0.1.0"
 description = "Voice-triggered enemy cooldown overlay for Albion Online"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.13"
 dependencies = [
     "PySide6>=6.8",
@@ -13,6 +16,10 @@ dependencies = [
     "sounddevice>=0.5",
     "pynput>=1.7.7",
 ]
+
+[project.urls]
+Homepage = "https://github.com/twasser/albion-pvp-timer"
+Issues = "https://github.com/twasser/albion-pvp-timer/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "pytest-qt>=4.4", "pyinstaller>=6.10"]

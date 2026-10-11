@@ -1,78 +1,144 @@
 # PVPTimer
 
-Voice-triggered enemy cooldown timers for Albion Online. Hold your push-to-talk key, say
-what the enemy just used ("blood letter e"), and a countdown appears on a transparent
-overlay above the game.
+**Voice-triggered enemy cooldown timers for Albion Online.** Hold your push-to-talk key, say what the
+enemy just used ("blood letter e", "dodge"), and a countdown bar appears on screen, so you know when
+that ability is likely back.
 
-PVPTimer never reads game memory, injects into the game, or inspects network traffic.
-It only listens to your microphone while push-to-talk is held and draws a window on top
-of your screen.
+![Timer bars on screen: counting down, warning and READY](docs/images/overlay.png)
 
-## Using it
+- **Works offline.** Speech recognition runs on your PC; nothing is sent anywhere.
+- **Comes with 484 abilities** already set up: every weapon's E, plus chest (R), helmet (D) and
+  boots (F) abilities, generated from the game's own data.
+- **Fits how you already play.** Use the same push-to-talk key as Discord, and your callout to the
+  team starts the timer too.
+- **Yours to change.** Edit cooldowns and phrases, add your own abilities, and pick bar colors and
+  sizes.
 
-1. Unzip `PVPTimer-x.y.z.zip` anywhere and run `PVPTimer.exe`. The PVPTimer window opens
-   with your ability list.
-2. On first run, pick your push-to-talk key or mouse side button. Using the same key as
-   Discord works well: your callout to the team also starts the timer.
-3. Click **+ Add** to add abilities: a name, slot, cooldown in seconds, and one or more
-   phrases you'll say. Use **Test phrase** to check how the app hears you.
-4. Run Albion in **borderless fullscreen** or **windowed** mode. Exclusive fullscreen hides
-   the overlay (the ready beep still plays).
-5. Click **⇕ Move overlay** to drag the timers where you want them, then click it again.
-   **⚙ Settings → Overlay appearance** changes bar colors and size; **▶ Test timer** shows
-   a sample.
-6. **Minimize** the window while you play. Closing it (✕ or **Quit**) stops the timers.
+## Download
 
-Voice commands: any saved phrase starts or restarts that ability's timer.
-`clear <phrase>` removes one timer. `clear all` removes every timer.
+1. Go to [**Releases**](https://github.com/twasser/albion-pvp-timer/releases/latest) and download
+   `PVPTimer-x.y.z.zip`.
+2. Unzip it anywhere (for example your Documents folder) and open the `PVPTimer` folder.
 
-### Tips
+**You need:** Windows 10 or 11, a microphone, and Albion Online in **borderless fullscreen** or
+**windowed** mode. No Python or other installs.
 
-- A ⚠ word status means the speech model doesn't know a word (often Albion names).
-  Respell it with common words: `bloodletter` → `blood letter`.
-- Single letters are easy to mishear. Add a few variants per ability ("blood e",
-  "blood letter e").
-- If push-to-talk never fires while in game, check that Albion is not running as
-  administrator. Windows blocks non-admin apps from seeing keys pressed in admin windows.
-- Some antivirus tools flag new unsigned executables. The source is in this repository.
+## Quick start
 
-### Files
+1. Double-click **PVPTimer.exe**.
+   - Windows may say **"Windows protected your PC"**, because the app isn't code-signed yet. Click
+     **More info → Run anyway**.
+2. Pick your **push-to-talk** key or mouse side button when asked.
+3. Hold push-to-talk, say **"blood letter e"**, and let go. A Bloodletter E timer appears on screen.
+4. Click **⇕ Move overlay**, drag the bars where you want them, and click it again to lock them.
+5. **Minimize** PVPTimer while you play. Closing it (✕ or **Quit**) stops the timers.
 
-Your abilities, settings and log are in `%APPDATA%\PVPTimer\`. Export/Import in the
-editor shares ability lists as JSON.
+![The PVPTimer window with the ability list](docs/images/main-window.png)
 
-## Development
+## Using PVPTimer
 
-```bash
-"$LOCALAPPDATA/Programs/Python/Python313/python.exe" -m venv .venv
-.venv/Scripts/python -m pip install -e ".[dev]"
-.venv/Scripts/python scripts/get_model.py
-.venv/Scripts/python -m pytest
-.venv/Scripts/python -m pvptimer
-```
+### Calling out abilities
 
-### The built-in ability list
+| Say | What happens |
+|---|---|
+| A weapon name, with or without the slot: "blood letter e", "blood letter" | Starts that weapon's E timer |
+| An item and its ability: "hunter hood retaliate" | Starts a timer for that item's ability |
+| Just the ability: "dodge", "taunt r" | Starts one shared timer for that ability, whatever item it came from |
+| The same phrase again | Restarts that timer |
+| "clear" + a phrase: "clear blood letter e" | Removes that timer |
+| "clear all" | Removes every timer |
 
-`src/pvptimer/data/default_abilities.json` ships with every build. It is generated from the
-game data that the community extracts after each patch
-([ao-data/ao-bin-dumps](https://github.com/ao-data/ao-bin-dumps)): each weapon's E ability, plus
-the chest (R), helmet (D) and boots (F) abilities, with spoken phrases made from the item names.
+Bars count down, turn **amber** in the last 3 seconds, then flash **READY** with a beep and fade out.
 
-```bash
-.venv/Scripts/python scripts/import_game_data.py
-```
+If nothing starts, a short message on the overlay says why:
+- **"? not a saved phrase":** it heard you, but what you said isn't in your list.
+- **"? heard nothing":** no speech came through. Check your microphone in Settings.
 
-Re-run it after a game patch. It prints a summary and writes `build/import_report.txt`, which
-lists phrases with words the speech model doesn't know (add a sound-alike to `SPOKEN` in
-`src/pvptimer/gamedata.py`), cooldowns read from a recast stage (worth checking in game), and
-anything skipped. Cooldowns are base values; cooldown-reduction gear makes the real ones shorter.
+Cooldowns are the game's base values. Cooldown-reduction gear and buffs make the real ones shorter.
 
-To ship a hand-made list instead: Editor → **Export…**, save the file over
-`src/pvptimer/data/default_abilities.json`, then rebuild.
+### The ability list
 
-### Building a release
+- **Tabs** split the list into **Weapons**, **Armor items**, **Armor abilities** and **Custom** (the
+  ones you add). **Search** looks through names and phrases.
+- **Change an ability:** click it, edit the cooldown or phrases (one per line), then **Save**. Your
+  changes are kept even when PVPTimer updates its built-in list.
+- **Add your own:** click **+ Add**, fill in a name, slot, cooldown and phrases, then **Save**. The form
+  clears so you can add the next one.
+- **🎤 Test phrase:** click it, hold push-to-talk and speak. It shows exactly what PVPTimer heard and
+  which ability matched.
+- **Status column:** **✓** is fine. **⚠ word** means a phrase uses a word the speech model doesn't
+  know, so respell it with common words ("bloodletter" → "blood letter"). **⚠ dup** means two
+  abilities share a phrase.
+- **Import… / Export…** share ability lists with friends as a file.
 
-```bash
-.venv/Scripts/pyinstaller pvptimer.spec --noconfirm
-powershell -NoProfile -Command "Compress-Archive -Force dist/PVPTimer dist/PVPTimer-0.1.0.zip"
-```
+### Settings
+
+![Settings, including bar colors and sizes](docs/images/settings.png)
+
+- **Push-to-talk:** any key, or a mouse side or middle button.
+- **Microphone:** only microphones that work with PVPTimer are listed. "System default" follows
+  Windows.
+- **Speech delay:** how long it takes you to finish a callout after the enemy casts (default 0.7 s).
+  It's subtracted from every timer.
+- **Warning before ready / Show READY for / Beep:** when bars turn amber, how long READY stays, and the
+  sound.
+- **Overlay appearance:** colors for counting down, warning and READY, bar width and height, and a
+  live preview. **Reset appearance** restores the defaults.
+- **▶ Test timer** in the main window shows an 8-second sample bar on the overlay.
+
+## Tips
+
+- Short phrases like "dodge" are fastest, but if you share your Discord push-to-talk key, ordinary
+  talk containing them can start a timer. If that happens, remove the one-word phrase from those
+  abilities; "dodge f" still works.
+- Single letters are easy to mishear. Give important abilities a couple of phrases.
+- Everything is stored in `%APPDATA%\PVPTimer` (settings, your abilities, and a log), so it survives
+  updating to a new version.
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| "Windows protected your PC" | Click **More info → Run anyway**. The app isn't code-signed, so Windows doesn't recognise it yet. |
+| The overlay doesn't show in game | Switch Albion to **borderless fullscreen** or **windowed**. Exclusive fullscreen hides other windows; the beep still plays. |
+| Push-to-talk does nothing while Albion is focused | Albion may be running as administrator. Run PVPTimer as administrator too, or run Albion normally. |
+| "? heard nothing" | Pick your microphone in **⚙ Settings**, and check Windows hasn't muted it. |
+| "? not a saved phrase" | Use **🎤 Test phrase** to see what it heard, then add that wording as a phrase. |
+| It says PVPTimer is already running | Only one copy runs at a time. Look for it in the taskbar. |
+| Antivirus flags it | New unsigned apps sometimes get flagged. The source is in this repository, and each release lists a SHA-256 checksum you can compare. |
+
+Something else? [Open an issue](https://github.com/twasser/albion-pvp-timer/issues/new/choose) and
+attach `%APPDATA%\PVPTimer\pvptimer.log`.
+
+## Privacy
+
+PVPTimer works entirely offline. It only records your microphone while push-to-talk is held, and the
+audio is never saved or sent anywhere. The log file on your PC records the phrases it recognized.
+
+## Fair play and Albion's rules
+
+PVPTimer listens to your microphone and draws a window on top of your screen. It does **not** read or
+change the game, its memory or its network traffic, and it never presses keys for you.
+
+Albion Online's [Terms and Conditions](https://albiononline.com/terms_and_conditions) restrict
+third-party tools that give players an advantage. Whether a voice-controlled cooldown timer falls
+under that is for Sandbox Interactive to decide. Read their rules and **use PVPTimer at your own
+risk**.
+
+## Credits
+
+- Game data from [ao-data/ao-bin-dumps](https://github.com/ao-data/ao-bin-dumps).
+- Speech recognition by [Vosk](https://alphacephei.com/vosk/).
+- Built with [Qt for Python](https://www.qt.io/qt-for-python),
+  [pynput](https://github.com/moses-palmer/pynput) and
+  [python-sounddevice](https://github.com/spatialaudio/python-sounddevice).
+
+PVPTimer is a fan-made tool, **not affiliated with, endorsed by or supported by Sandbox Interactive
+GmbH**. Albion Online is a trademark of Sandbox Interactive GmbH.
+
+## License
+
+PVPTimer is released under the [MIT License](LICENSE). The release download also includes
+components under their own licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+Want to build it yourself or help out? See [CONTRIBUTING.md](CONTRIBUTING.md).
