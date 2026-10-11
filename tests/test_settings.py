@@ -27,7 +27,9 @@ def test_file_shape_matches_spec(tmp_path):
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data["version"] == 1
     assert data["ptt"] == {"device": "keyboard", "key": "f8"}
-    assert data["overlay"] == {"screen": 0, "x": 40, "y": 200, "opacity": 0.9}
+    assert data["overlay"] == {"screen": 0, "x": 40, "y": 200, "opacity": 0.9,
+                               "bar_width": 260, "bar_height": 26, "color_running": "#64748b",
+                               "color_warning": "#f59e0b", "color_ready": "#22c55e"}
 
 
 def test_partial_file_fills_defaults(tmp_path):
@@ -51,3 +53,30 @@ def test_invalid_file_is_quarantined(tmp_path):
 def test_binding_labels():
     assert PttBinding("mouse", "x1").label() == "Mouse X1"
     assert PttBinding("keyboard", "f8").label() == "Key F8"
+
+
+def test_overlay_appearance_round_trip(tmp_path):
+    path = tmp_path / "settings.json"
+    s = Settings(overlay=OverlaySettings(bar_width=400, bar_height=40, color_running="#ff0000",
+                                         color_warning="#00ff00", color_ready="#0000ff"))
+    save_settings(path, s)
+    assert load_settings(path) == (s, None)
+
+
+def test_old_settings_file_without_appearance_uses_defaults(tmp_path):
+    path = tmp_path / "settings.json"
+    path.write_text('{"version": 1, "overlay": {"screen": 1, "x": 5, "y": 6, "opacity": 0.5}}',
+                    encoding="utf-8")
+    settings, warning = load_settings(path)
+    assert warning is None
+    assert settings.overlay == OverlaySettings(1, 5, 6, 0.5)
+
+
+def test_out_of_range_sizes_are_clamped_and_bad_colors_reset(tmp_path):
+    path = tmp_path / "settings.json"
+    path.write_text('{"version": 1, "overlay": {"bar_width": 5000, "bar_height": 1, '
+                    '"color_ready": "green"}}', encoding="utf-8")
+    settings, warning = load_settings(path)
+    assert warning is None
+    assert (settings.overlay.bar_width, settings.overlay.bar_height) == (600, 16)
+    assert settings.overlay.color_ready == "#22c55e"

@@ -2,9 +2,10 @@ from types import SimpleNamespace
 
 import pytest
 from PySide6.QtCore import QPoint, QRect
+from PySide6.QtGui import QColor
 
-from pvptimer.overlay import (OverlayWindow, format_remaining, heard_message, relative_position,
-                              resolve_position)
+from pvptimer.overlay import (MAX_ROWS, ROW_GAP, BarPreview, OverlayWindow, format_remaining,
+                              heard_message, relative_position, resolve_position, text_color_for)
 from pvptimer.settings import OverlaySettings
 from pvptimer.timers import TimerManager
 
@@ -58,3 +59,32 @@ def test_overlay_paints_every_state_without_errors(qtbot):
 ])
 def test_heard_message(text, has_abilities, message):
     assert heard_message(text, has_abilities) == message
+
+
+def test_text_is_dark_on_light_bars_and_light_on_dark_bars():
+    assert text_color_for(QColor("#ffff00")).lightness() < 60
+    assert text_color_for(QColor("#22c55e")).lightness() < 60
+    assert text_color_for(QColor("#64748b")).lightness() > 200
+    assert text_color_for(QColor("#1d4ed8")).lightness() > 200
+
+
+def test_overlay_uses_configured_bar_size_and_colors(qtbot):
+    timers = TimerManager(speech_offset_s=0.0)
+    timers.start(SimpleNamespace(id="a", name="Bloodletter E", cooldown_s=15))
+    window = OverlayWindow(timers, OverlaySettings())
+    qtbot.addWidget(window)
+    big = OverlaySettings(bar_width=400, bar_height=40, color_running="#ffff00")
+    window.apply_settings(big)
+    assert window.width() == 400
+    assert window.height() == (40 + ROW_GAP) * (MAX_ROWS + 1)
+    image = window.grab().toImage()
+    assert image.pixelColor(395, 20).name() == "#ffff00"  # right end of a full bar
+
+
+def test_preview_shows_three_states_and_follows_style(qtbot):
+    preview = BarPreview(OverlaySettings())
+    qtbot.addWidget(preview)
+    assert not preview.grab().isNull()
+    preview.set_style(OverlaySettings(bar_width=300, bar_height=30))
+    assert preview.minimumWidth() == 300
+    assert preview.minimumHeight() == 3 * (30 + ROW_GAP)
