@@ -1,0 +1,14 @@
+# One phrase per line. Mix Albion names with slot letters. Edit freely.
+blood letter e
+bloodletter e
+cleric robe r
+hellion hood d
+guardian helmet d
+carving sword e
+spirit hunter e
+mercenary jacket r
+assassin jacket r
+judicator armor r
+scholar robe r
+royal cowl d
+soldier boots f
