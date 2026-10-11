@@ -2,13 +2,17 @@
 from dataclasses import replace
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QCheckBox, QComboBox, QDialog, QDialogButtonBox, QDoubleSpinBox,
-                               QFormLayout, QPushButton, QSlider)
+from PySide6.QtGui import QColor
+from PySide6.QtWidgets import (QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox,
+                               QDoubleSpinBox, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QPushButton,
+                               QSlider, QVBoxLayout)
 
 from .hotkey import PttListener
-from .settings import PttBinding, Settings
+from .overlay import BarPreview, text_color_for
+from .settings import BAR_HEIGHT_RANGE, BAR_WIDTH_RANGE, OverlaySettings, PttBinding, Settings
 
 NOT_SET = "Not set – click, then press your key"
+COLOR_KEYS = (("running", "Counting down"), ("warning", "Warning"), ("ready", "READY"))
 
 
 def _spin(minimum: float, maximum: float, step: float, value: float) -> QDoubleSpinBox:
@@ -26,6 +30,14 @@ def _slider(minimum: int, maximum: int, value: int) -> QSlider:
     slider.setRange(minimum, maximum)
     slider.setValue(value)
     return slider
+
+
+def _with_label(slider: QSlider, label: QLabel) -> QHBoxLayout:
+    row = QHBoxLayout()
+    row.addWidget(slider, 1)
+    label.setMinimumWidth(48)
+    row.addWidget(label)
+    return row
 
 
 class SettingsDialog(QDialog):
@@ -62,13 +74,33 @@ class SettingsDialog(QDialog):
         self.volume_slider = _slider(0, 100, round(settings.beep_volume * 100))
         self.opacity_slider = _slider(20, 100, round(settings.overlay.opacity * 100))
 
+        # overlay appearance
+        overlay = settings.overlay
+        self._colors = {key: getattr(overlay, f"color_{key}") for key, _ in COLOR_KEYS}
+        self.color_buttons: dict[str, QPushButton] = {}
+        for key, label in COLOR_KEYS:
+            button = QPushButton()
+            button.setToolTip(f"Bar color while {label.lower()}")
+            button.clicked.connect(lambda _=False, k=key, t=label: self._pick_color(k, t))
+            self.color_buttons[key] = button
+            self._show_color(key)
+        self.width_slider = _slider(*BAR_WIDTH_RANGE, overlay.bar_width)
+        self.height_slider = _slider(*BAR_HEIGHT_RANGE, overlay.bar_height)
+        self.width_label = QLabel()
+        self.height_label = QLabel()
+        self.reset_appearance_button = QPushButton("Reset appearance")
+        self.reset_appearance_button.clicked.connect(self._reset_appearance)
+        self.preview = BarPreview(self._overlay_style())
+        self.width_slider.valueChanged.connect(lambda *_: self._appearance_changed())
+        self.height_slider.valueChanged.connect(lambda *_: self._appearance_changed())
+
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         self.ok_button = buttons.button(QDialogButtonBox.StandardButton.Ok)
         self.ok_button.setEnabled(self._binding is not None)
 
-        form = QFormLayout(self)
+        form = QFormLayout()
         form.addRow("Push-to-talk", self.ptt_button)
         form.addRow("Microphone", self.mic_combo)
         form.addRow("Speech delay", self.offset_spin)
@@ -77,7 +109,21 @@ class SettingsDialog(QDialog):
         form.addRow("", self.beep_check)
         form.addRow("Beep volume", self.volume_slider)
         form.addRow("Overlay opacity", self.opacity_slider)
-        form.addRow(buttons)
+
+        appearance = QGroupBox("Overlay appearance")
+        look = QFormLayout(appearance)
+        for key, label in COLOR_KEYS:
+            look.addRow(f"{label} color", self.color_buttons[key])
+        look.addRow("Bar width", _with_label(self.width_slider, self.width_label))
+        look.addRow("Bar height", _with_label(self.height_slider, self.height_label))
+        look.addRow("Preview", self.preview)
+        look.addRow("", self.reset_appearance_button)
+
+        layout = QVBoxLayout(self)
+        layout.addLayout(form)
+        layout.addWidget(appearance)
+        layout.addWidget(buttons)
+        self._appearance_changed()
 
         if ptt is not None:
             ptt.captured.connect(self._on_captured)
@@ -93,8 +139,49 @@ class SettingsDialog(QDialog):
             ready_display_s=self.ready_spin.value(),
             beep_enabled=self.beep_check.isChecked(),
             beep_volume=self.volume_slider.value() / 100,
-            overlay=replace(self._base.overlay, opacity=self.opacity_slider.value() / 100),
+            overlay=self._overlay_style(),
         )
+
+    def set_color(self, key: str, color: str) -> None:
+        self._colors[key] = color.lower()
+        self._show_color(key)
+        self._appearance_changed()
+
+    def _overlay_style(self) -> OverlaySettings:
+        return replace(
+            self._base.overlay,
+            opacity=self.opacity_slider.value() / 100,
+            bar_width=self.width_slider.value(),
+            bar_height=self.height_slider.value(),
+            color_running=self._colors["running"],
+            color_warning=self._colors["warning"],
+            color_ready=self._colors["ready"],
+        )
+
+    def _appearance_changed(self) -> None:
+        self.width_label.setText(f"{self.width_slider.value()} px")
+        self.height_label.setText(f"{self.height_slider.value()} px")
+        self.preview.set_style(self._overlay_style())
+
+    def _show_color(self, key: str) -> None:
+        color = QColor(self._colors[key])
+        self.color_buttons[key].setText(self._colors[key])
+        self.color_buttons[key].setStyleSheet(
+            f"background-color: {color.name()}; color: {text_color_for(color).name()};")
+
+    def _pick_color(self, key: str, label: str) -> None:
+        color = QColorDialog.getColor(QColor(self._colors[key]), self, f"{label} bar color")
+        if color.isValid():
+            self.set_color(key, color.name())
+
+    def _reset_appearance(self) -> None:
+        defaults = OverlaySettings()
+        self.width_slider.setValue(defaults.bar_width)
+        self.height_slider.setValue(defaults.bar_height)
+        for key, _ in COLOR_KEYS:
+            self._colors[key] = getattr(defaults, f"color_{key}")
+            self._show_color(key)
+        self._appearance_changed()
 
     def done(self, result: int) -> None:
         if self._ptt is not None:
