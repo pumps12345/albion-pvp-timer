@@ -55,7 +55,8 @@ def main() -> int:
 
     archive = Path(shutil.make_archive(str(DIST / f"PVPTimer-{__version__}"), "zip", DIST, "PVPTimer"))
     digest = hashlib.sha256(archive.read_bytes()).hexdigest()
-    archive.with_name(archive.name + ".sha256").write_text(f"{digest}  {archive.name}\n", encoding="utf-8")
+    archive.with_name(archive.name + ".sha256").write_text(  # LF endings: the standard checksum format
+        f"{digest}  {archive.name}\n", encoding="utf-8", newline="\n")
     print(f"\n{archive}\n{archive.stat().st_size / 1_000_000:.0f} MB\nSHA-256: {digest}")
     return 0
 
