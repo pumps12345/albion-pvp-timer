@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New **Delete shown…** button in the ability editor: deletes every ability currently listed (follows the
+  tab and search), so the built-in list can be cleared in one step.
 - New **Always listen** setting: PVPTimer listens continuously, so no push-to-talk key is needed. While
   it is on, the keyboard and mouse hook is released and unmatched speech is ignored silently.
   Push-to-talk is still the default.

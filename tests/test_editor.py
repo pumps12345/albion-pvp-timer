@@ -131,6 +131,36 @@ def test_delete_asks_then_removes(editor, store, monkeypatch):
     assert column(editor, 0) == ["Bloodletter E"]
 
 
+def test_delete_shown_removes_only_what_the_search_shows(editor, store, monkeypatch):
+    monkeypatch.setattr(QMessageBox, "exec", lambda self: QMessageBox.StandardButton.Yes)
+    editor.search_edit.setText("hell")
+    assert editor.shown_ability_ids() == ["hellion_hood_d"]
+    editor.delete_shown_button.click()
+    assert store.get("hellion_hood_d") is None
+    assert store.get("bloodletter_e") is not None
+
+
+def test_delete_shown_with_no_filter_clears_the_whole_list(editor, store, monkeypatch):
+    monkeypatch.setattr(QMessageBox, "exec", lambda self: QMessageBox.StandardButton.Yes)
+    editor.delete_shown_button.click()
+    assert store.abilities() == []
+    assert editor.table.rowCount() == 0
+
+
+def test_delete_shown_does_nothing_when_declined(editor, store, monkeypatch):
+    monkeypatch.setattr(QMessageBox, "exec", lambda self: QMessageBox.StandardButton.No)
+    editor.delete_shown_button.click()
+    assert len(store.abilities()) == 2
+
+
+def test_delete_shown_does_nothing_when_nothing_is_shown(editor, store, monkeypatch):
+    asked = []
+    monkeypatch.setattr(QMessageBox, "exec", lambda self: asked.append(True) or QMessageBox.StandardButton.Yes)
+    editor.search_edit.setText("zzzz no match")
+    editor.delete_shown_button.click()
+    assert asked == [] and len(store.abilities()) == 2
+
+
 def test_test_result_is_shown_only_while_waiting(qtbot, editor, store):
     editor.table.selectRow(0)
     editor.show_test_result("blood e", store.get("bloodletter_e"))

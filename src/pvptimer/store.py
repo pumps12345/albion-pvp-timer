@@ -2,7 +2,7 @@
 import json
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Iterable
 
 from PySide6.QtCore import QObject, Signal
 
@@ -82,6 +82,17 @@ class AbilityStore(QObject):
         self._user.pop(ability_id, None)
         if any(d.id == ability_id for d in self._defaults):
             self._deleted.add(ability_id)
+        self._commit()
+
+    def delete_many(self, ability_ids: Iterable[str]) -> None:
+        """Delete several abilities with a single save and a single change notification."""
+        default_ids = {d.id for d in self._defaults}
+        ids = set(ability_ids)
+        if not ids:
+            return
+        for ability_id in ids:
+            self._user.pop(ability_id, None)
+        self._deleted |= ids & default_ids
         self._commit()
 
     def export_file(self, path: Path) -> None:

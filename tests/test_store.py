@@ -79,6 +79,23 @@ def test_deleting_a_user_ability_removes_it(files, make_ability):
     assert new_store(files).get("mine") is None
 
 
+def test_delete_many_removes_defaults_and_user_abilities_with_one_notification(files, make_ability, qtbot):
+    store = new_store(files)
+    store.upsert(make_ability(id="", name="Mine", phrases=("mine",)))
+    with qtbot.waitSignal(store.abilities_changed, timeout=1000):
+        store.delete_many(["bloodletter_e", "cleric_robe_r", "mine", "not_a_real_id"])
+    assert store.abilities() == []
+    reloaded = new_store(files)
+    assert reloaded.abilities() == []  # deleted defaults stay deleted after a restart
+
+
+def test_delete_many_with_nothing_does_nothing(files):
+    store = new_store(files)
+    store.delete_many([])
+    assert len(store.abilities()) == 2
+    assert not files[1].exists()  # no save happened
+
+
 def test_new_ability_never_reuses_a_deleted_default_id(files, make_ability):
     store = new_store(files)
     store.delete("cleric_robe_r")

@@ -62,6 +62,9 @@ Cooldowns are the game's base values. Cooldown-reduction gear and buffs make the
   ones you add). **Search** looks through names and phrases.
 - **Change an ability:** click it, edit the cooldown or phrases (one per line), then **Save**. Your
   changes are kept even when PVPTimer updates its built-in list.
+- **Delete a lot at once:** **Delete shown…** removes every ability currently listed. It follows the
+  tab and the search box, so pick **Weapons** to clear just those, or leave **All** selected with an
+  empty search to clear the whole list and start fresh. **Export…** first if you might want them back.
 - **Add your own:** click **+ Add**, fill in a name, slot, cooldown and phrases, then **Save**. The form
   clears so you can add the next one.
 - **🎤 Test phrase:** click it, hold push-to-talk and speak. It shows exactly what PVPTimer heard and

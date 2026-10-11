@@ -62,12 +62,16 @@ class EditorWindow(QWidget):
         # toolbar
         self.add_button = QPushButton("+ Add")
         self.delete_button = QPushButton("Delete")
+        self.delete_shown_button = QPushButton("Delete shown…")
+        self.delete_shown_button.setToolTip("Delete every ability currently listed (respects the tab and search). "
+                                            "On the All tab with an empty search, this clears the whole list.")
         self.import_button = QPushButton("Import…")
         self.export_button = QPushButton("Export…")
         self.search_edit = QLineEdit()
         self.search_edit.setPlaceholderText("Search names and phrases")
         toolbar = QHBoxLayout()
-        for widget in (self.add_button, self.delete_button, self.import_button, self.export_button):
+        for widget in (self.add_button, self.delete_button, self.delete_shown_button,
+                       self.import_button, self.export_button):
             toolbar.addWidget(widget)
         toolbar.addStretch(1)
         toolbar.addWidget(self.search_edit)
@@ -142,6 +146,7 @@ class EditorWindow(QWidget):
 
         self.add_button.clicked.connect(self._add)
         self.delete_button.clicked.connect(self._delete)
+        self.delete_shown_button.clicked.connect(self._delete_shown)
         self.import_button.clicked.connect(self._import)
         self.export_button.clicked.connect(self._export)
         self.search_edit.textChanged.connect(self._apply_filter)
@@ -282,6 +287,26 @@ class EditorWindow(QWidget):
         if answer != QMessageBox.StandardButton.Yes:
             return
         self._store.delete(self._editing.id)
+        self._load_form(None)
+
+    def shown_ability_ids(self) -> list[str]:
+        """Ids of the abilities currently visible in the table (after the tab and search filters)."""
+        return [self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+                for row in range(self.table.rowCount()) if not self.table.isRowHidden(row)]
+
+    def _delete_shown(self) -> None:
+        ids = self.shown_ability_ids()
+        if not ids:
+            return
+        scope = "the whole list" if len(ids) == self.table.rowCount() else "the abilities currently shown"
+        box = QMessageBox(QMessageBox.Icon.Warning, "Delete abilities",
+                          f"Delete {len(ids)} abilities ({scope})?\n\n"
+                          "Use Export… first if you might want them back.",
+                          QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, self)
+        box.setDefaultButton(QMessageBox.StandardButton.No)
+        if box.exec() != QMessageBox.StandardButton.Yes:
+            return
+        self._store.delete_many(ids)
         self._load_form(None)
 
     # import / export ----------------------------------------------------
