@@ -1,0 +1,115 @@
+import json
+
+import pytest
+from PySide6.QtWidgets import QMessageBox
+
+from pvptimer.abilities import ability_file
+from pvptimer.editor import EditorWindow, ability_status, describe_test_result
+from pvptimer.store import AbilityStore
+
+
+def fake_unknown(phrases):
+    return {w for p in phrases for w in p.split() if w == "hellion"}
+
+
+@pytest.fixture
+def store(tmp_path, make_ability):
+    defaults = tmp_path / "defaults.json"
+    defaults.write_text(json.dumps(ability_file([
+        make_ability(phrases=("blood letter e", "blood e")),
+        make_ability(id="hellion_hood_d", name="Hellion Hood D", slot="D", cooldown_s=25.0,
+                     phrases=("hellion d",)),
+    ])), encoding="utf-8")
+    s = AbilityStore(defaults, tmp_path / "user.json")
+    s.load()
+    return s
+
+
+@pytest.fixture
+def editor(qtbot, store):
+    window = EditorWindow(store, fake_unknown)
+    qtbot.addWidget(window)
+    return window
+
+
+def column(editor, index):
+    return [editor.table.item(r, index).text() for r in range(editor.table.rowCount())]
+
+
+def test_ability_status(make_ability):
+    assert ability_status(make_ability(phrases=("blood e", "hellion e")), fake_unknown, set())[0] == "⚠ word"
+    b = make_ability(phrases=("blood e",))
+    assert ability_status(b, fake_unknown, {"blood e"}) == ("⚠ dup", "Also used by another ability: blood e")
+    assert ability_status(b, fake_unknown, set()) == ("✓", "")
+
+
+def test_describe_test_result(make_ability):
+    bl = make_ability()
+    assert describe_test_result("", None, "bloodletter_e", False) == "Heard nothing — try again."
+    assert describe_test_result("hello", None, "x", False) == 'Heard: "hello" → ✗ no match'
+    assert describe_test_result("blood e", bl, "bloodletter_e", False) == 'Heard: "blood e" → ✓ matches Bloodletter E'
+    assert describe_test_result("blood e", bl, "other", False) == \
+        'Heard: "blood e" → matches a different ability: Bloodletter E'
+    assert describe_test_result("blood e", bl, "bloodletter_e", True).endswith(
+        "(unsaved changes can't be heard until you Save)")
+
+
+def test_table_lists_abilities_with_status(editor):
+    assert column(editor, 0) == ["Bloodletter E", "Hellion Hood D"]
+    assert column(editor, 3) == ["blood letter e, blood e", "hellion d"]
+    assert column(editor, 4) == ["✓", "⚠ word"]
+    assert "hellion" in editor.table.item(1, 4).toolTip()
+
+
+def test_new_ability_form_validates_then_saves(editor, store):
+    editor.add_button.click()
+    assert not editor.save_button.isEnabled()
+    editor.name_edit.setText("Cleric Robe R")
+    editor.slot_combo.setCurrentText("R")
+    editor.cooldown_spin.setValue(30.0)
+    editor.phrases_edit.setPlainText("blood e")
+    assert "already used by Bloodletter E" in editor.errors_label.text()
+    assert not editor.save_button.isEnabled()
+    editor.phrases_edit.setPlainText("cleric robe r\nrobe r")
+    assert editor.errors_label.text() == ""
+    assert editor.save_button.isEnabled()
+    editor.save_button.click()
+    saved = store.get("cleric_robe_r")
+    assert saved.phrases == ("cleric robe r", "robe r") and saved.cooldown_s == 30.0
+    assert "Cleric Robe R" in column(editor, 0)
+    assert not editor.save_button.isEnabled()  # saved form is no longer dirty
+
+
+def test_selecting_a_row_loads_it_and_revert_discards_edits(editor):
+    editor.table.selectRow(0)
+    assert editor.name_edit.text() == "Bloodletter E"
+    assert not editor.save_button.isEnabled()
+    editor.cooldown_spin.setValue(20.0)
+    assert editor.save_button.isEnabled()
+    editor.revert_button.click()
+    assert editor.cooldown_spin.value() == 15.0
+
+
+def test_search_hides_non_matching_rows(editor):
+    editor.search_edit.setText("hell")
+    assert [editor.table.isRowHidden(r) for r in range(2)] == [True, False]
+    editor.search_edit.setText("blood e")  # phrases are searched too
+    assert [editor.table.isRowHidden(r) for r in range(2)] == [False, True]
+
+
+def test_delete_asks_then_removes(editor, store, monkeypatch):
+    monkeypatch.setattr(QMessageBox, "question", lambda *a, **k: QMessageBox.StandardButton.Yes)
+    editor.table.selectRow(1)
+    editor.delete_button.click()
+    assert store.get("hellion_hood_d") is None
+    assert column(editor, 0) == ["Bloodletter E"]
+
+
+def test_test_result_is_shown_only_while_waiting(qtbot, editor, store):
+    editor.table.selectRow(0)
+    editor.show_test_result("blood e", store.get("bloodletter_e"))
+    assert editor.test_label.text() == ""  # not waiting: ignored
+    with qtbot.waitSignal(editor.test_requested):
+        editor.test_button.click()
+    editor.show_test_result("blood e", store.get("bloodletter_e"))
+    assert editor.test_label.text() == 'Heard: "blood e" → ✓ matches Bloodletter E'
