@@ -50,6 +50,17 @@ def test_invalid_file_is_quarantined(tmp_path):
     assert not path.exists()
 
 
+def test_always_listen_defaults_off_and_round_trips(tmp_path):
+    path = tmp_path / "settings.json"
+    assert Settings().always_listen is False
+    path.write_text('{"version": 1, "warning_s": 5}', encoding="utf-8")  # file from before the option
+    assert load_settings(path)[0].always_listen is False
+    s = Settings(always_listen=True)  # no push-to-talk key is fine in this mode
+    save_settings(path, s)
+    assert json.loads(path.read_text(encoding="utf-8"))["always_listen"] is True
+    assert load_settings(path) == (s, None)
+
+
 def test_binding_labels():
     assert PttBinding("mouse", "x1").label() == "Mouse X1"
     assert PttBinding("keyboard", "f8").label() == "Key F8"

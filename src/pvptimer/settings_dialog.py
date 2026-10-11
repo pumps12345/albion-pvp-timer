@@ -49,8 +49,14 @@ class SettingsDialog(QDialog):
         self._binding = settings.ptt
         self._ptt = ptt
 
+        self.always_check = QCheckBox("Always listen (no push-to-talk key)")
+        self.always_check.setChecked(settings.always_listen)
+        self.always_check.setToolTip("The microphone is always on while PVPTimer runs, so nothing needs to be held. "
+                                     "Ordinary talk containing a saved phrase will start a timer, "
+                                     "so use phrases that are unlikely to come up in normal conversation.")
+        self.always_check.toggled.connect(lambda *_: self._update_listen_mode())
+
         self.ptt_button = QPushButton(self._binding_text())
-        self.ptt_button.setEnabled(ptt is not None)
         self.ptt_button.clicked.connect(self._start_capture)
 
         self.mic_combo = QComboBox()
@@ -98,9 +104,9 @@ class SettingsDialog(QDialog):
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         self.ok_button = buttons.button(QDialogButtonBox.StandardButton.Ok)
-        self.ok_button.setEnabled(self._binding is not None)
 
         form = QFormLayout()
+        form.addRow("Listening", self.always_check)
         form.addRow("Push-to-talk", self.ptt_button)
         form.addRow("Microphone", self.mic_combo)
         form.addRow("Speech delay", self.offset_spin)
@@ -124,6 +130,7 @@ class SettingsDialog(QDialog):
         layout.addWidget(appearance)
         layout.addWidget(buttons)
         self._appearance_changed()
+        self._update_listen_mode()
 
         if ptt is not None:
             ptt.captured.connect(self._on_captured)
@@ -133,6 +140,7 @@ class SettingsDialog(QDialog):
         return replace(
             self._base,
             ptt=self._binding,
+            always_listen=self.always_check.isChecked(),
             mic_device=self.mic_combo.currentData(),
             speech_offset_s=self.offset_spin.value(),
             warning_s=self.warning_spin.value(),
@@ -191,6 +199,12 @@ class SettingsDialog(QDialog):
             self._ptt = None
         super().done(result)
 
+    def _update_listen_mode(self) -> None:
+        """A push-to-talk key is only needed (and only editable) when not always listening."""
+        always = self.always_check.isChecked()
+        self.ptt_button.setEnabled(self._ptt is not None and not always)
+        self.ok_button.setEnabled(always or self._binding is not None)
+
     def _binding_text(self) -> str:
         return self._binding.label() if self._binding else NOT_SET
 
@@ -201,7 +215,7 @@ class SettingsDialog(QDialog):
     def _on_captured(self, binding: PttBinding) -> None:
         self._binding = binding
         self.ptt_button.setText(self._binding_text())
-        self.ok_button.setEnabled(True)
+        self._update_listen_mode()
 
     def _on_capture_cancelled(self) -> None:
         self.ptt_button.setText(self._binding_text())

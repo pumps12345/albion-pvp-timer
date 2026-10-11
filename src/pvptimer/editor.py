@@ -319,7 +319,7 @@ class EditorWindow(QWidget):
 
     # phrase test ----------------------------------------------------------
     def _request_test(self) -> None:
-        self.test_label.setText("Hold your push-to-talk key and speak…")
+        self.test_label.setText("Speak now (hold your push-to-talk key first if you use one)…")
         self._test_timeout.start()
         self.test_requested.emit()
 

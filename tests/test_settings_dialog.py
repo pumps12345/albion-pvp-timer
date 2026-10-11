@@ -34,6 +34,28 @@ def test_ok_requires_a_push_to_talk_binding(qtbot):
     assert dlg.result_settings().ptt == PttBinding("keyboard", "f8")
 
 
+def test_always_listen_needs_no_push_to_talk_binding(qtbot):
+    dlg = SettingsDialog(Settings(), [], ptt=None)
+    qtbot.addWidget(dlg)
+    assert not dlg.ok_button.isEnabled()
+    dlg.always_check.setChecked(True)
+    assert dlg.ok_button.isEnabled()
+    result = dlg.result_settings()
+    assert result.always_listen is True
+    assert result.ptt is None
+    dlg.always_check.setChecked(False)
+    assert not dlg.ok_button.isEnabled()  # back to needing a key
+
+
+def test_always_listen_checkbox_shows_saved_value_and_keeps_the_old_key(qtbot):
+    dlg = SettingsDialog(Settings(ptt=PttBinding("keyboard", "f8"), always_listen=True), [], ptt=None)
+    qtbot.addWidget(dlg)
+    assert dlg.always_check.isChecked()
+    assert not dlg.ptt_button.isEnabled()
+    assert dlg.ok_button.isEnabled()
+    assert dlg.result_settings().ptt == PttBinding("keyboard", "f8")  # remembered for switching back
+
+
 def test_missing_microphone_is_kept_and_labelled(qtbot):
     dlg = SettingsDialog(Settings(mic_device="Old USB Mic"), ["Desk Mic"], ptt=None)
     qtbot.addWidget(dlg)

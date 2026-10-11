@@ -172,6 +172,63 @@ def test_dead_microphone_stream_is_reopened_on_press(worker, monkeypatch):
     assert reopened == [True]
 
 
+def listen_always(w):
+    w._always_listen = True
+    w._apply_listen_mode()
+
+
+def test_always_listen_reports_each_callout_without_a_key_press(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer(["blood letter e", "robe r"], "")
+    listen_always(w)
+    for chunk in (b"a", b"PAUSE", b"b", b"PAUSE"):
+        w._audio.put(chunk)
+    w._feed()
+    assert heard == ["blood letter e", "robe r"]
+    assert w._listening.is_set()  # still listening afterwards
+
+
+def test_always_listen_reports_unknown_speech_immediately(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer(["[unk]"], "")
+    listen_always(w)
+    w._audio.put(b"PAUSE")
+    w._feed()
+    assert heard == ["[unk]"]
+
+
+def test_push_to_talk_events_are_ignored_while_always_listening(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer([], "robe r")
+    listen_always(w)
+    w.on_ptt_down()
+    w.on_ptt_up()
+    assert not w._finalize_timer.isActive()
+    assert heard == []
+    assert w._listening.is_set()
+
+
+def test_switching_back_to_push_to_talk_stops_continuous_listening(worker):
+    w, _ = worker
+    w._recognizer = FakeRecognizer([], "")
+    listen_always(w)
+    w.set_always_listen(False)
+    assert not w._listening.is_set()
+    assert not w._feed_timer.isActive()
+
+
+def test_always_listen_reopens_a_dead_microphone_stream_but_not_every_tick(worker, monkeypatch):
+    w, _ = worker
+    w._recognizer = FakeRecognizer([], "")
+    listen_always(w)
+    w._stream = FakeStream(active=False)
+    reopened = []
+    monkeypatch.setattr(w, "_open_stream", lambda: reopened.append(True))
+    w._feed()
+    w._feed()  # a second tick right away must not retry
+    assert reopened == [True]
+
+
 def test_device_list_and_lookup_skip_devices_that_cannot_record():
     usable = lambda index: index != 1  # e.g. a WDM-KS entry that rejects 16 kHz mono
     assert input_device_names(DEVICES, usable) == ["Desk Mic", "Headset Mic"]

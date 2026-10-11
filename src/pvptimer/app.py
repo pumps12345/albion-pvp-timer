@@ -16,7 +16,7 @@ from .hotkey import PttListener
 from .instance import InstanceServer, acquire_single_instance, ask_running_instance_to_show
 from .main_window import MainWindow
 from .overlay import OverlayWindow
-from .router import Action, decide
+from .router import UNKNOWN_SPEECH, Action, decide
 from .settings import Settings, load_settings, save_settings
 from .settings_dialog import SettingsDialog
 from .speech import SpeechWorker, can_record, input_device_names
@@ -47,6 +47,7 @@ def make_icon() -> QIcon:
 class PvpTimerApp(QObject):
     phrases_changed = Signal(list)   # -> SpeechWorker.set_phrases (queued to the worker thread)
     mic_changed = Signal(object)     # -> SpeechWorker.set_mic_device
+    always_listen_changed = Signal(bool)  # -> SpeechWorker.set_always_listen
 
     def __init__(self, qapp: QApplication) -> None:
         super().__init__()
@@ -68,7 +69,7 @@ class PvpTimerApp(QObject):
         self.ptt = PttListener()
         self.ptt.failed.connect(self._on_ptt_failed)
 
-        self.speech = SpeechWorker(paths.model_dir(), s.mic_device)
+        self.speech = SpeechWorker(paths.model_dir(), s.mic_device, s.always_listen)
         self._speech_thread = QThread()
         self.speech.moveToThread(self._speech_thread)
         self._speech_thread.started.connect(self.speech.start)
@@ -76,6 +77,7 @@ class PvpTimerApp(QObject):
         self.ptt.ptt_up.connect(self.speech.on_ptt_up)
         self.phrases_changed.connect(self.speech.set_phrases)
         self.mic_changed.connect(self.speech.set_mic_device)
+        self.always_listen_changed.connect(self.speech.set_always_listen)
         self.speech.recognized.connect(self._on_recognized)
         self.speech.model_ready.connect(self._on_model_ready)
         self.speech.error.connect(self._notify)
@@ -105,14 +107,14 @@ class PvpTimerApp(QObject):
         self.main.show()
         self._push_phrases()
         self._speech_thread.start()
-        self.ptt.start(s.ptt)
+        self.ptt.start(None if s.always_listen else s.ptt)  # always-listen mode needs no key hook
 
         for warning in [settings_warning, *self.store.warnings]:
             if warning:
                 self._notify(warning)
         if not self.store.abilities():
             self._notify(NO_ABILITIES)
-        if s.ptt is None:
+        if s.ptt is None and not s.always_listen:
             QTimer.singleShot(0, self.open_settings)  # first run: ask for the push-to-talk key
 
     # runtime ------------------------------------------------------------
@@ -130,6 +132,9 @@ class PvpTimerApp(QObject):
 
     def _on_recognized(self, text: str) -> None:
         test_mode = time.monotonic() < self._test_deadline
+        always = self.settings.always_listen
+        if always and not test_mode and text in ("", UNKNOWN_SPEECH):
+            return  # ambient talk that matched no saved phrase: nothing to show while always listening
         self._test_deadline = 0.0
         decision = decide(text, self.store.match, test_mode)
         log.info("heard %r -> %s", decision.text, decision.action.value)
@@ -141,7 +146,7 @@ class PvpTimerApp(QObject):
             self.timers.clear(decision.ability.id)
         elif decision.action is Action.START:
             self.timers.start(decision.ability)
-        else:
+        elif not always:  # while always listening, stray words shouldn't pop messages on the overlay
             self.overlay.show_heard(decision.text, bool(self.store.phrases()))
 
     def _on_model_ready(self) -> None:
@@ -197,8 +202,10 @@ class PvpTimerApp(QObject):
         self.timers.ready_display_s = new.ready_display_s
         self.beep.configure(new.beep_volume, new.beep_enabled)
         self.overlay.apply_settings(new.overlay)
-        if new.ptt != old.ptt:
-            self.ptt.start(new.ptt)
+        if (new.ptt, new.always_listen) != (old.ptt, old.always_listen):
+            self.ptt.start(None if new.always_listen else new.ptt)
+        if new.always_listen != old.always_listen:
+            self.always_listen_changed.emit(new.always_listen)
         if new.mic_device != old.mic_device:
             self.mic_changed.emit(new.mic_device)
 

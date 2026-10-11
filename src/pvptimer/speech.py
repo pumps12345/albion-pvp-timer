@@ -8,6 +8,7 @@ import json
 import logging
 import queue
 import threading
+import time
 from pathlib import Path
 from typing import Callable, Iterable
 
@@ -20,6 +21,7 @@ SAMPLE_RATE = 16000
 BLOCK_SIZE = 800          # 50 ms of audio per callback
 FEED_INTERVAL_MS = 50
 PTT_TAIL_MS = 150         # keep recording briefly after release so the last syllable isn't cut off
+REOPEN_INTERVAL_S = 10.0  # always-listen mode: how often to retry a microphone that stopped
 log = logging.getLogger(__name__)
 
 
@@ -93,10 +95,12 @@ class SpeechWorker(QObject):
     model_ready = Signal()
     error = Signal(str)
 
-    def __init__(self, model_path: Path, mic_device: str | None) -> None:
+    def __init__(self, model_path: Path, mic_device: str | None, always_listen: bool = False) -> None:
         super().__init__()
         self._model_path = model_path
         self._mic_device = mic_device
+        self._always_listen = always_listen  # listen continuously instead of while push-to-talk is held
+        self._last_reopen = 0.0
         self._model = None
         self._recognizer = None
         self._phrases: list[str] = []
@@ -141,6 +145,7 @@ class SpeechWorker(QObject):
             return
         self._rebuild_recognizer()
         self._open_stream()
+        self._apply_listen_mode()
         self.model_ready.emit()
 
     def _create_timers(self) -> None:
@@ -162,6 +167,27 @@ class SpeechWorker(QObject):
     def set_phrases(self, phrases: list) -> None:
         self._phrases = [str(p) for p in phrases]
         self._rebuild_recognizer()
+
+    @Slot(bool)
+    def set_always_listen(self, enabled: bool) -> None:
+        self._always_listen = enabled
+        self._apply_listen_mode()
+
+    def _apply_listen_mode(self) -> None:
+        """Switch between continuous listening and push-to-talk. Runs on the worker thread."""
+        if self._recognizer is None:  # no model yet; start() applies the mode once it is loaded
+            return
+        self._finalize_timer.stop()
+        self._drain(feed=False)
+        self._recognizer.Reset()
+        self._reported = False
+        self._heard_unknown = False
+        if self._always_listen:
+            self._listening.set()
+            self._feed_timer.start()
+        else:
+            self._listening.clear()
+            self._feed_timer.stop()
 
     @Slot(object)
     def set_mic_device(self, name: str | None) -> None:
@@ -211,7 +237,7 @@ class SpeechWorker(QObject):
     # push-to-talk (worker thread, via queued signals) ---------------------
     @Slot()
     def on_ptt_down(self) -> None:
-        if self._recognizer is None:
+        if self._recognizer is None or self._always_listen:
             return
         if self._finalize_timer.isActive():  # pressed again during the tail: finish the last one
             self._finalize_timer.stop()
@@ -229,11 +255,18 @@ class SpeechWorker(QObject):
 
     @Slot()
     def on_ptt_up(self) -> None:
-        if self._recognizer is None or not self._listening.is_set():
+        if self._recognizer is None or self._always_listen or not self._listening.is_set():
             return
         self._finalize_timer.start()
 
     def _feed(self) -> None:
+        if self._always_listen and (self._stream is None or not self._stream.active):
+            # The mic stopped (e.g. headset unplugged): keep trying, but not on every 50 ms tick.
+            now = time.monotonic()
+            if now - self._last_reopen >= REOPEN_INTERVAL_S:
+                self._last_reopen = now
+                log.warning("microphone stream inactive; reopening")
+                self._open_stream()
         self._drain(feed=True)
 
     def _drain(self, feed: bool) -> None:
@@ -249,6 +282,8 @@ class SpeechWorker(QObject):
     def _report(self, text: str) -> None:
         if text == UNKNOWN_SPEECH:
             self._heard_unknown = True
+            if self._always_listen:  # no end-of-hold summary in this mode, so report it now
+                self.recognized.emit(text)
         elif text:
             self._reported = True
             self.recognized.emit(text)

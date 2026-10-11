@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QApplication
 
 from pvptimer import app as app_module
 from pvptimer import paths
-from pvptimer.settings import load_settings
+from pvptimer.settings import PttBinding, load_settings
 
 
 @pytest.fixture(autouse=True)
@@ -57,6 +57,37 @@ def test_unmatched_phrase_is_shown_on_overlay(running_app, monkeypatch):
     running_app._on_recognized("")
     running_app._on_recognized("[unk]")
     assert heard == [("hello", True), ("", True), ("[unk]", True)]
+
+
+def test_always_listening_ignores_ambient_talk_but_still_starts_timers(running_app, monkeypatch):
+    running_app._apply_settings(replace(running_app.settings, always_listen=True))
+    heard = []
+    monkeypatch.setattr(running_app.overlay, "show_heard", lambda text, has_abilities: heard.append(text))
+    running_app._on_recognized("[unk]")
+    running_app._on_recognized("")
+    running_app._on_recognized("clear nothing saved")
+    assert heard == []
+    running_app._on_recognized("blood letter e")
+    assert [v.ability_id for v in running_app.timers.snapshot()] == ["bloodletter_e"]
+
+
+def test_always_listening_still_answers_the_test_phrase_button(running_app, monkeypatch):
+    running_app._apply_settings(replace(running_app.settings, always_listen=True))
+    running_app.open_editor()
+    results = []
+    monkeypatch.setattr(running_app.editor, "show_test_result", lambda text, ability: results.append(text))
+    running_app._arm_test()
+    running_app._on_recognized("[unk]")
+    assert results == ["[unk]"]
+
+
+def test_toggling_always_listen_stops_or_starts_the_key_hook(running_app, monkeypatch):
+    started = []
+    monkeypatch.setattr(running_app.ptt, "start", lambda binding: started.append(binding))
+    key = PttBinding("keyboard", "f8")
+    running_app._apply_settings(replace(running_app.settings, ptt=key, always_listen=True))
+    running_app._apply_settings(replace(running_app.settings, always_listen=False))
+    assert started == [None, key]  # hook released while always listening, restored afterwards
 
 
 def test_first_run_without_abilities_points_to_the_editor(qtbot, tmp_path, monkeypatch, notes):

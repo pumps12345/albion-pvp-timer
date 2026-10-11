@@ -75,7 +75,11 @@ Cooldowns are the game's base values. Cooldown-reduction gear and buffs make the
 
 ![Settings, including bar colors and sizes](docs/images/settings.png)
 
-- **Push-to-talk:** any key, or a mouse side or middle button.
+- **Always listen:** tick this to skip push-to-talk entirely. The microphone stays on while PVPTimer
+  runs and every callout is picked up as you say it. Speech that doesn't match a saved phrase is
+  ignored without any message. Phrases that could come up in normal conversation will start timers
+  by accident, so favor distinctive ones ("dodge f" over "dodge").
+- **Push-to-talk:** any key, or a mouse side or middle button. Not used while *Always listen* is on.
 - **Microphone:** only microphones that work with PVPTimer are listed. "System default" follows
   Windows.
 - **Speech delay:** how long it takes you to finish a callout after the enemy casts (default 0.7 s).

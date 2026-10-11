@@ -81,6 +81,7 @@ class OverlaySettings:
 @dataclass
 class Settings:
     ptt: PttBinding | None = None
+    always_listen: bool = False  # True: listen continuously, no push-to-talk key needed
     mic_device: str | None = None
     speech_offset_s: float = 0.7
     warning_s: float = 3.0
@@ -93,6 +94,7 @@ class Settings:
         return {
             "version": SETTINGS_VERSION,
             "ptt": self.ptt.to_json() if self.ptt else None,
+            "always_listen": self.always_listen,
             "mic_device": self.mic_device,
             "speech_offset_s": self.speech_offset_s,
             "warning_s": self.warning_s,
@@ -112,6 +114,7 @@ class Settings:
             raise TypeError("mic_device must be a string or null")
         return Settings(
             ptt=PttBinding.from_json(data.get("ptt")),
+            always_listen=bool(data.get("always_listen", d.always_listen)),
             mic_device=mic,
             speech_offset_s=float(data.get("speech_offset_s", d.speech_offset_s)),
             warning_s=float(data.get("warning_s", d.warning_s)),

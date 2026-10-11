@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- New **Always listen** setting: PVPTimer listens continuously, so no push-to-talk key is needed. While
+  it is on, the keyboard and mouse hook is released and unmatched speech is ignored silently.
+  Push-to-talk is still the default.
+
 ## 0.1.0 (first public release)
 
 - Voice-triggered enemy cooldown timers: hold push-to-talk, say an ability, and a countdown bar appears
