@@ -113,3 +113,7 @@ def test_test_result_is_shown_only_while_waiting(qtbot, editor, store):
         editor.test_button.click()
     editor.show_test_result("blood e", store.get("bloodletter_e"))
     assert editor.test_label.text() == 'Heard: "blood e" → ✓ matches Bloodletter E'
+
+
+def test_describe_test_result_for_unknown_speech():
+    assert describe_test_result("[unk]", None, "x", False) ==         "Heard speech, but it isn't one of your saved phrases."

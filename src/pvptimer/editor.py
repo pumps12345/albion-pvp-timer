@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QComboBox, QDoubleSpinBox, QFi
                                QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 from .abilities import MAX_COOLDOWN_S, SLOTS, Ability
+from .router import UNKNOWN_SPEECH
 from .store import AbilityStore
 
 COLUMNS = ("Name", "Slot", "Cooldown", "Voice phrases", "Status")
@@ -31,6 +32,8 @@ def ability_status(ability: Ability, unknown_words: UnknownWords, duplicates: se
 def describe_test_result(text: str, matched: Ability | None, editing_id: str, dirty: bool) -> str:
     if not text:
         message = "Heard nothing — try again."
+    elif text == UNKNOWN_SPEECH:
+        message = "Heard speech, but it isn't one of your saved phrases."
     elif matched is None:
         message = f'Heard: "{text}" → ✗ no match'
     elif matched.id == editing_id:

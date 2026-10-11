@@ -6,6 +6,7 @@ from PySide6.QtCore import QPoint, QRect, QRectF, Qt, Signal
 from PySide6.QtGui import QColor, QFont, QGuiApplication, QPainter, QPen
 from PySide6.QtWidgets import QWidget
 
+from .router import UNKNOWN_SPEECH
 from .settings import OverlaySettings
 from .timers import TimerManager, TimerState, TimerView
 
@@ -33,6 +34,13 @@ def format_remaining(remaining_s: float) -> str:
     if remaining_s < 10:
         return f"{remaining_s:.1f}"
     return str(math.ceil(remaining_s))
+
+
+def heard_message(text: str, has_abilities: bool) -> str:
+    """Overlay line shown when push-to-talk produced no timer."""
+    if text == UNKNOWN_SPEECH:
+        return "? not a saved phrase" if has_abilities else "? no abilities saved – open Editor"
+    return f'? heard: "{text}"' if text else "? heard nothing"
 
 
 def resolve_position(screens: list[QRect], screen: int, x: int, y: int) -> QPoint:
@@ -65,7 +73,7 @@ class OverlayWindow(QWidget):
         self._timers = timers
         self._move_mode = False
         self._drag_offset: QPoint | None = None
-        self._heard_text = ""
+        self._heard_message = ""
         self._heard_until = 0.0
         self.setWindowTitle("PVPTimer overlay")
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -90,8 +98,8 @@ class OverlayWindow(QWidget):
             self.position_changed.emit(*relative_position(self._screens(), self.pos()))
         self.update()
 
-    def show_heard(self, text: str) -> None:
-        self._heard_text = text
+    def show_heard(self, text: str, has_abilities: bool = True) -> None:
+        self._heard_message = heard_message(text, has_abilities)
         self._heard_until = time.monotonic() + HEARD_S
         self.update()
 
@@ -172,7 +180,7 @@ class OverlayWindow(QWidget):
         painter.setPen(Qt.PenStyle.NoPen)
         painter.setBrush(BACKGROUND)
         painter.drawRoundedRect(rect, RADIUS, RADIUS)
-        text = f'? heard: "{self._heard_text}"' if self._heard_text else "? heard nothing"
+        text = self._heard_message
         text_rect = rect.adjusted(8, 0, -8, 0)
         painter.setPen(MUTED)
         painter.drawText(text_rect, LEFT, painter.fontMetrics().elidedText(

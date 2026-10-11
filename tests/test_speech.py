@@ -5,7 +5,7 @@ import pytest
 
 from pvptimer import paths
 from pvptimer.speech import (SpeechWorker, build_grammar, extract_text, input_device_names,
-                             resolve_input_device)
+                             resolve_input_device, result_text)
 
 needs_model = pytest.mark.skipif(not paths.model_dir().exists(), reason="Vosk model not downloaded")
 
@@ -124,9 +124,34 @@ def test_each_callout_in_one_hold_is_reported_separately(worker):
 
 def test_hold_without_speech_reports_heard_nothing_once(worker):
     w, heard = worker
-    w._recognizer = FakeRecognizer([], "[unk]")
-    hold(w, b"noise")
+    w._recognizer = FakeRecognizer([], "")
+    hold(w, b"silence")
     assert heard == [""]
+
+
+def test_speech_that_matches_no_phrase_is_reported_as_unknown(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer(["[unk]"], "")
+    hold(w, b"PAUSE")
+    assert heard == ["[unk]"]
+
+
+def test_unknown_speech_is_not_reported_when_a_callout_was_recognized(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer(["[unk]"], "robe r")
+    hold(w, b"PAUSE", b"b")
+    assert heard == ["robe r"]
+
+
+@pytest.mark.parametrize("raw, text", [
+    ('{"text": "[unk]"}', "[unk]"),
+    ('{"text": "[unk] [unk]"}', "[unk]"),
+    ('{"text": "[unk] blood e"}', "blood e"),
+    ('{"text": ""}', ""),
+    ("not json", ""),
+])
+def test_result_text_marks_unknown_speech(raw, text):
+    assert result_text(raw) == text
 
 
 def test_audio_before_the_press_is_discarded(worker):

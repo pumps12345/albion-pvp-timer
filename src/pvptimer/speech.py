@@ -14,6 +14,7 @@ from typing import Callable, Iterable
 from PySide6.QtCore import QObject, QTimer, Signal, Slot
 
 from .abilities import RESERVED_WORD, normalize_phrase
+from .router import UNKNOWN_SPEECH
 
 SAMPLE_RATE = 16000
 BLOCK_SIZE = 800          # 50 ms of audio per callback
@@ -34,7 +35,20 @@ def extract_text(result_json: str) -> str:
         text = json.loads(result_json).get("text", "")
     except ValueError:
         return ""
-    return normalize_phrase(" ".join(w for w in text.split() if w != "[unk]"))
+    return normalize_phrase(" ".join(w for w in text.split() if w != UNKNOWN_SPEECH))
+
+
+def result_text(result_json: str) -> str:
+    """The recognized phrase; UNKNOWN_SPEECH if only speech outside the phrase list was heard;
+    "" for silence."""
+    text = extract_text(result_json)
+    if text:
+        return text
+    try:
+        raw = json.loads(result_json).get("text", "")
+    except ValueError:
+        return ""
+    return UNKNOWN_SPEECH if UNKNOWN_SPEECH in raw.split() else ""
 
 
 Usable = Callable[[int], bool]
@@ -87,6 +101,7 @@ class SpeechWorker(QObject):
         self._recognizer = None
         self._phrases: list[str] = []
         self._reported = False  # a callout was already emitted during this hold
+        self._heard_unknown = False  # speech outside the phrase list was heard during this hold
         self._stream = None
         self._audio: queue.Queue[bytes] = queue.Queue()
         self._listening = threading.Event()
@@ -208,6 +223,7 @@ class SpeechWorker(QObject):
         self._drain(feed=False)
         self._recognizer.Reset()
         self._reported = False
+        self._heard_unknown = False
         self._listening.set()
         self._feed_timer.start()
 
@@ -228,10 +244,12 @@ class SpeechWorker(QObject):
                 return
             if feed and self._recognizer.AcceptWaveform(chunk):
                 # Vosk found a pause: that's one complete callout, report it right away.
-                self._report(extract_text(self._recognizer.Result()))
+                self._report(result_text(self._recognizer.Result()))
 
     def _report(self, text: str) -> None:
-        if text:
+        if text == UNKNOWN_SPEECH:
+            self._heard_unknown = True
+        elif text:
             self._reported = True
             self.recognized.emit(text)
 
@@ -239,7 +257,7 @@ class SpeechWorker(QObject):
         self._listening.clear()
         self._feed_timer.stop()
         self._drain(feed=True)
-        final = extract_text(self._recognizer.FinalResult())
+        self._report(result_text(self._recognizer.FinalResult()))
         self._recognizer.Reset()
-        if final or not self._reported:
-            self.recognized.emit(final)  # empty text = "heard nothing" for the whole hold
+        if not self._reported:  # nothing matched during the whole hold
+            self.recognized.emit(UNKNOWN_SPEECH if self._heard_unknown else "")

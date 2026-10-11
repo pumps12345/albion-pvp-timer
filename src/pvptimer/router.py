@@ -5,6 +5,8 @@ from typing import Callable
 
 from .abilities import RESERVED_WORD, Ability, normalize_phrase
 
+UNKNOWN_SPEECH = "[unk]"  # speech was heard but matched none of the saved phrases
+
 
 class Action(Enum):
     TEST_RESULT = "test_result"
@@ -22,6 +24,8 @@ class Decision:
 
 
 def decide(text: str, match: Callable[[str], Ability | None], test_mode: bool) -> Decision:
+    if text == UNKNOWN_SPEECH:
+        return Decision(Action.TEST_RESULT if test_mode else Action.NO_MATCH, text)
     text = normalize_phrase(text)
     if test_mode:
         return Decision(Action.TEST_RESULT, text, match(text) if text else None)

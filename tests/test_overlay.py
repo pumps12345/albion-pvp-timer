@@ -3,7 +3,8 @@ from types import SimpleNamespace
 import pytest
 from PySide6.QtCore import QPoint, QRect
 
-from pvptimer.overlay import OverlayWindow, format_remaining, relative_position, resolve_position
+from pvptimer.overlay import (OverlayWindow, format_remaining, heard_message, relative_position,
+                              resolve_position)
 from pvptimer.settings import OverlaySettings
 from pvptimer.timers import TimerManager
 
@@ -47,3 +48,13 @@ def test_overlay_paints_every_state_without_errors(qtbot):
     window.show_heard("hello there")
     window.set_move_mode(True)
     assert not window.grab().isNull()
+
+
+@pytest.mark.parametrize("text, has_abilities, message", [
+    ("", True, "? heard nothing"),
+    ("hello", True, '? heard: "hello"'),
+    ("[unk]", True, "? not a saved phrase"),
+    ("[unk]", False, "? no abilities saved – open Editor"),
+])
+def test_heard_message(text, has_abilities, message):
+    assert heard_message(text, has_abilities) == message

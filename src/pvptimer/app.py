@@ -101,6 +101,9 @@ class PvpTimerApp(QObject):
         for warning in [settings_warning, *self.store.warnings]:
             if warning:
                 self._notify(warning)
+        if not self.store.abilities():
+            self._notify("No abilities saved yet. Right-click the tray icon → Editor to add the "
+                         "enemy abilities you want to call out.")
         if s.ptt is None:
             QTimer.singleShot(0, self.open_settings)  # first run: ask for the push-to-talk key
 
@@ -142,7 +145,7 @@ class PvpTimerApp(QObject):
         elif decision.action is Action.START:
             self.timers.start(decision.ability)
         else:
-            self.overlay.show_heard(decision.text)
+            self.overlay.show_heard(decision.text, bool(self.store.phrases()))
 
     def _on_model_ready(self) -> None:
         flagged = [a.name for a in self.store.abilities() if self.speech.unknown_words(a.phrases)]

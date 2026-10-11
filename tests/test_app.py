@@ -41,10 +41,21 @@ def test_recognized_phrase_starts_and_clears_timers(running_app):
 
 def test_unmatched_phrase_is_shown_on_overlay(running_app, monkeypatch):
     heard = []
-    monkeypatch.setattr(running_app.overlay, "show_heard", heard.append)
+    monkeypatch.setattr(running_app.overlay, "show_heard", lambda text, has_abilities: heard.append((text, has_abilities)))
     running_app._on_recognized("hello")
     running_app._on_recognized("")
-    assert heard == ["hello", ""]
+    running_app._on_recognized("[unk]")
+    assert heard == [("hello", True), ("", True), ("[unk]", True)]
+
+
+def test_first_run_without_abilities_points_to_the_editor(qtbot, tmp_path, monkeypatch, notes):
+    monkeypatch.setattr(app_module.paths, "model_dir", lambda *a: tmp_path / "no-model")
+    monkeypatch.setattr(app_module.PvpTimerApp, "open_settings", lambda self: None)
+    application = app_module.PvpTimerApp(QApplication.instance())
+    try:
+        assert any("No abilities saved yet" in m for m in notes)
+    finally:
+        application.shutdown()
 
 
 def test_armed_test_routes_next_result_to_editor_only(running_app, monkeypatch):

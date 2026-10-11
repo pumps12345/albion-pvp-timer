@@ -50,3 +50,9 @@ def test_test_mode_reports_match_without_acting(match, text, ability_id):
     d = decide(text, match, test_mode=True)
     assert d.action is Action.TEST_RESULT
     assert (d.ability.id if d.ability else None) == ability_id
+
+
+def test_unknown_speech_is_no_match_and_kept_as_marker(match):
+    d = decide("[unk]", match, False)
+    assert d.action is Action.NO_MATCH and d.text == "[unk]"
+    assert decide("[unk]", match, True).action is Action.TEST_RESULT

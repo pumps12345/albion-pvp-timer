@@ -8,9 +8,10 @@
   Respell with known words: `blood letter`, `judge`, etc.
 - In vocabulary: single letters `e r d f q w`, plus `hell`, `ion`, `blood`, `letter`, `cowl`, `fury`, `clear`, `all`.
 
-## Voice accuracy / latency
+## Voice accuracy / latency (user run, 2026-10-10)
 
-PENDING: the user runs
-`.venv/Scripts/python spike/spike_recognize.py models/vosk-model-small-en-us-0.15 spike/phrases.txt`
-and pastes the output here. Decision rule: ≥ 90% → keep the small model; otherwise try
-`vosk-model-en-us-0.22-lgraph`.
+- Accuracy: 21/22 = 95% with vosk-model-small-en-us-0.15. The one miss ("blood letter e" heard as
+  "blood letter") was the speaker cutting the phrase short, not a recognition error.
+- Recognition time: avg 54 ms, max 63 ms (after the audio ends).
+
+Decision: keep the small model (≥ 90%). No change to MODEL_NAME or pvptimer.spec.
