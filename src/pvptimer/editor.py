@@ -231,9 +231,12 @@ class EditorWindow(QWidget):
         except ValueError as exc:
             self.errors_label.setText(str(exc))
             return
-        self._editing = stored
+        # Start a blank form right away so several abilities can be entered in a row.
+        self._editing = None
         self.refresh()
-        self._load_form(stored)
+        self._load_form(None)
+        self.form_title.setText(f"New ability (saved “{stored.name}”)")
+        self.name_edit.setFocus()
 
     def _revert(self) -> None:
         self._load_form(self._editing)

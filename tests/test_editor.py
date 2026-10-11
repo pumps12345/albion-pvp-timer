@@ -80,6 +80,32 @@ def test_new_ability_form_validates_then_saves(editor, store):
     assert not editor.save_button.isEnabled()  # saved form is no longer dirty
 
 
+def add(editor, name, phrases):
+    editor.name_edit.setText(name)
+    editor.phrases_edit.setPlainText(phrases)
+    editor.save_button.click()
+
+
+def test_saving_clears_the_form_for_the_next_ability(editor, store):
+    editor.add_button.click()
+    add(editor, "Cleric Robe R", "cleric robe r")
+    assert editor.name_edit.text() == ""
+    assert editor.phrases_edit.toPlainText() == ""
+    assert editor.form_title.text() == "New ability (saved “Cleric Robe R”)"
+    assert editor.table.selectionModel().selectedRows() == []
+    add(editor, "Royal Cowl D", "royal cowl d")  # straight into the next one
+    assert store.get("cleric_robe_r") is not None and store.get("royal_cowl_d") is not None
+
+
+def test_saving_an_edit_also_clears_the_form(editor, store):
+    editor.table.selectRow(0)
+    editor.cooldown_spin.setValue(20.0)
+    editor.save_button.click()
+    assert store.get("bloodletter_e").cooldown_s == 20.0
+    assert editor.name_edit.text() == ""
+    assert editor.form_title.text() == "New ability (saved “Bloodletter E”)"
+
+
 def test_selecting_a_row_loads_it_and_revert_discards_edits(editor):
     editor.table.selectRow(0)
     assert editor.name_edit.text() == "Bloodletter E"
