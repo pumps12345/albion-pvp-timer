@@ -68,7 +68,7 @@ class SpeechWorker(QObject):
         self._model = None
         self._recognizer = None
         self._phrases: list[str] = []
-        self._parts: list[str] = []
+        self._reported = False  # a callout was already emitted during this hold
         self._stream = None
         self._audio: queue.Queue[bytes] = queue.Queue()
         self._listening = threading.Event()
@@ -94,14 +94,7 @@ class SpeechWorker(QObject):
     @Slot()
     def start(self) -> None:
         """Connected to QThread.started, so it runs on the worker thread."""
-        self._feed_timer = QTimer(self)
-        self._feed_timer.setInterval(FEED_INTERVAL_MS)
-        self._feed_timer.timeout.connect(self._feed)
-        self._finalize_timer = QTimer(self)
-        self._finalize_timer.setSingleShot(True)
-        self._finalize_timer.setInterval(PTT_TAIL_MS)
-        self._finalize_timer.timeout.connect(self._finalize)
-
+        self._create_timers()
         import vosk
         vosk.SetLogLevel(-1)
         if not self._model_path.exists():
@@ -116,6 +109,16 @@ class SpeechWorker(QObject):
         self._rebuild_recognizer()
         self._open_stream()
         self.model_ready.emit()
+
+    def _create_timers(self) -> None:
+        # Created on the worker thread (from start()) so they fire there.
+        self._feed_timer = QTimer(self)
+        self._feed_timer.setInterval(FEED_INTERVAL_MS)
+        self._feed_timer.timeout.connect(self._feed)
+        self._finalize_timer = QTimer(self)
+        self._finalize_timer.setSingleShot(True)
+        self._finalize_timer.setInterval(PTT_TAIL_MS)
+        self._finalize_timer.timeout.connect(self._finalize)
 
     def stop(self) -> None:
         """Call from the main thread after the worker thread has finished."""
@@ -177,9 +180,13 @@ class SpeechWorker(QObject):
         if self._finalize_timer.isActive():  # pressed again during the tail: finish the last one
             self._finalize_timer.stop()
             self._finalize()
+        if self._stream is None or not self._stream.active:
+            # The mic stopped (e.g. headset unplugged or default device changed): reopen it.
+            log.warning("microphone stream inactive; reopening")
+            self._open_stream()
         self._drain(feed=False)
         self._recognizer.Reset()
-        self._parts = []
+        self._reported = False
         self._listening.set()
         self._feed_timer.start()
 
@@ -199,16 +206,19 @@ class SpeechWorker(QObject):
             except queue.Empty:
                 return
             if feed and self._recognizer.AcceptWaveform(chunk):
-                # Vosk found a pause mid-phrase; keep that part and continue.
-                part = extract_text(self._recognizer.Result())
-                if part:
-                    self._parts.append(part)
+                # Vosk found a pause: that's one complete callout, report it right away.
+                self._report(extract_text(self._recognizer.Result()))
+
+    def _report(self, text: str) -> None:
+        if text:
+            self._reported = True
+            self.recognized.emit(text)
 
     def _finalize(self) -> None:
         self._listening.clear()
         self._feed_timer.stop()
         self._drain(feed=True)
-        text = normalize_phrase(" ".join([*self._parts, extract_text(self._recognizer.FinalResult())]))
+        final = extract_text(self._recognizer.FinalResult())
         self._recognizer.Reset()
-        self._parts = []
-        self.recognized.emit(text)
+        if final or not self._reported:
+            self.recognized.emit(final)  # empty text = "heard nothing" for the whole hold

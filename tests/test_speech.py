@@ -64,3 +64,84 @@ def test_real_model_vocabulary_lookup():
     model = vosk.Model(str(paths.model_dir()))
     assert model.vosk_model_find_word("blood") != -1
     assert model.vosk_model_find_word("qzxv") == -1
+
+
+class FakeRecognizer:
+    """Stands in for KaldiRecognizer. A chunk equal to b"PAUSE" makes Vosk report an endpoint."""
+
+    def __init__(self, segments, final):
+        self._segments = list(segments)
+        self._final = final
+        self.fed = []
+
+    def AcceptWaveform(self, chunk):
+        self.fed.append(chunk)
+        return chunk == b"PAUSE"
+
+    def Result(self):
+        return f'{{"text": "{self._segments.pop(0)}"}}'
+
+    def FinalResult(self):
+        return f'{{"text": "{self._final}"}}'
+
+    def Reset(self):
+        pass
+
+
+class FakeStream:
+    def __init__(self, active=True):
+        self.active = active
+
+    def close(self):
+        self.active = False
+
+
+@pytest.fixture
+def worker(qtbot):
+    w = SpeechWorker(Path("unused"), None)
+    w._create_timers()
+    w._stream = FakeStream()
+    heard = []
+    w.recognized.connect(heard.append)
+    return w, heard
+
+
+def hold(w, *chunks):
+    w.on_ptt_down()
+    for chunk in chunks:
+        w._audio.put(chunk)
+    w.on_ptt_up()
+    w._finalize_timer.stop()
+    w._finalize()
+
+
+def test_each_callout_in_one_hold_is_reported_separately(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer(["blood letter e"], "robe r")
+    hold(w, b"a", b"PAUSE", b"b")
+    assert heard == ["blood letter e", "robe r"]
+
+
+def test_hold_without_speech_reports_heard_nothing_once(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer([], "[unk]")
+    hold(w, b"noise")
+    assert heard == [""]
+
+
+def test_audio_before_the_press_is_discarded(worker):
+    w, heard = worker
+    w._recognizer = FakeRecognizer([], "blood e")
+    w._audio.put(b"stale")
+    hold(w, b"fresh")
+    assert w._recognizer.fed == [b"fresh"]
+
+
+def test_dead_microphone_stream_is_reopened_on_press(worker, monkeypatch):
+    w, _ = worker
+    w._recognizer = FakeRecognizer([], "")
+    w._stream = FakeStream(active=False)  # e.g. USB headset unplugged and plugged back in
+    reopened = []
+    monkeypatch.setattr(w, "_open_stream", lambda: reopened.append(True))
+    w.on_ptt_down()
+    assert reopened == [True]
