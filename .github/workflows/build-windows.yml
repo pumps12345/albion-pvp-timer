@@ -1,0 +1,27 @@
+name: Build Windows exe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Set up environment
+        run: |
+          python -m venv .venv
+          .venv\Scripts\python -m pip install --upgrade pip
+          .venv\Scripts\python -m pip install -e ".[dev]"
+          .venv\Scripts\python scripts\get_model.py
+      - name: Build release zip
+        run: .venv\Scripts\python scripts\make_release.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PVPTimer-windows
+          path: |
+            dist/PVPTimer-*.zip
+            dist/PVPTimer-*.zip.sha256
