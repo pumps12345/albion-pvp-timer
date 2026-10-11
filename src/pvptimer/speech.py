@@ -37,21 +37,39 @@ def extract_text(result_json: str) -> str:
     return normalize_phrase(" ".join(w for w in text.split() if w != "[unk]"))
 
 
-def resolve_input_device(name: str | None, devices: list[dict]) -> int | None:
-    """Index of the first input device with exactly this name, else None (system default).
-    Windows lists one microphone once per audio API, so names repeat; the first wins."""
+Usable = Callable[[int], bool]
+
+
+def _any_device(index: int) -> bool:
+    return True
+
+
+def can_record(index: int) -> bool:
+    """True if device `index` accepts the 16 kHz mono int16 stream Vosk needs. Windows lists
+    each mic under several audio APIs, and some of them (WDM-KS, WASAPI) reject that format."""
+    import sounddevice as sd
+    try:
+        sd.check_input_settings(device=index, samplerate=SAMPLE_RATE, channels=1, dtype="int16")
+        return True
+    except Exception:
+        return False
+
+
+def resolve_input_device(name: str | None, devices: list[dict], usable: Usable = _any_device) -> int | None:
+    """Index of the first usable input device with exactly this name, else None (system default).
+    Windows lists one microphone once per audio API, so names repeat; the first usable one wins."""
     if name is None:
         return None
     for index, device in enumerate(devices):
-        if device["name"] == name and device["max_input_channels"] > 0:
+        if device["name"] == name and device["max_input_channels"] > 0 and usable(index):
             return index
     return None
 
 
-def input_device_names(devices: list[dict]) -> list[str]:
+def input_device_names(devices: list[dict], usable: Usable = _any_device) -> list[str]:
     names: list[str] = []
-    for device in devices:
-        if device["max_input_channels"] > 0 and device["name"] not in names:
+    for index, device in enumerate(devices):
+        if device["max_input_channels"] > 0 and device["name"] not in names and usable(index):
             names.append(device["name"])
     return names
 
@@ -147,7 +165,7 @@ class SpeechWorker(QObject):
     def _open_stream(self) -> None:
         import sounddevice as sd
         self._close_stream()
-        index = resolve_input_device(self._mic_device, list(sd.query_devices()))
+        index = resolve_input_device(self._mic_device, list(sd.query_devices()), can_record)
         if self._mic_device is not None and index is None:
             self.error.emit(f"Microphone '{self._mic_device}' not found; using the system default.")
         for device in ([index, None] if index is not None else [None]):
@@ -156,6 +174,9 @@ class SpeechWorker(QObject):
                                                  dtype="int16", channels=1, device=device,
                                                  callback=self._on_audio)
                 self._stream.start()
+                if device != index:
+                    self.error.emit(f"Microphone '{self._mic_device}' could not be opened; "
+                                    "using the system default.")
                 return
             except Exception as exc:
                 log.warning("could not open input device %r: %s", device, exc)

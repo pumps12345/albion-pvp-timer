@@ -18,7 +18,7 @@ from .overlay import OverlayWindow
 from .router import Action, decide
 from .settings import Settings, load_settings, save_settings
 from .settings_dialog import SettingsDialog
-from .speech import SpeechWorker, input_device_names
+from .speech import SpeechWorker, can_record, input_device_names
 from .store import AbilityStore
 from .timers import TimerManager
 
@@ -185,7 +185,7 @@ class PvpTimerApp(QObject):
         try:
             import sounddevice as sd
             try:
-                devices = input_device_names(list(sd.query_devices()))
+                devices = input_device_names(list(sd.query_devices()), can_record)
             except Exception as exc:
                 log.warning("could not list audio devices: %s", exc)
                 devices = []

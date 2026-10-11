@@ -145,3 +145,37 @@ def test_dead_microphone_stream_is_reopened_on_press(worker, monkeypatch):
     monkeypatch.setattr(w, "_open_stream", lambda: reopened.append(True))
     w.on_ptt_down()
     assert reopened == [True]
+
+
+def test_device_list_and_lookup_skip_devices_that_cannot_record():
+    usable = lambda index: index != 1  # e.g. a WDM-KS entry that rejects 16 kHz mono
+    assert input_device_names(DEVICES, usable) == ["Desk Mic", "Headset Mic"]
+    assert resolve_input_device("Headset Mic", DEVICES, usable) == 3
+
+
+def test_chosen_mic_that_fails_to_open_falls_back_with_a_warning(qtbot, monkeypatch):
+    import sounddevice as sd
+
+    class Stream:
+        active = True
+
+        def __init__(self, device, **kwargs):
+            if device is not None:
+                raise OSError("Invalid sample rate")
+            self.device = device
+
+        def start(self):
+            pass
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(sd, "query_devices", lambda: DEVICES)
+    monkeypatch.setattr(sd, "check_input_settings", lambda **kwargs: None)
+    monkeypatch.setattr(sd, "RawInputStream", Stream)
+    w = SpeechWorker(Path("unused"), "Desk Mic")
+    errors = []
+    w.error.connect(errors.append)
+    w._open_stream()
+    assert w._stream.device is None
+    assert errors == ["Microphone 'Desk Mic' could not be opened; using the system default."]
