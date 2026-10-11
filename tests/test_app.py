@@ -79,11 +79,43 @@ def test_applying_settings_updates_components_and_saves(running_app):
     assert saved.speech_offset_s == 1.5
 
 
-def test_only_one_instance_can_hold_the_lock(tmp_path):
-    first = app_module.acquire_single_instance(tmp_path)
-    assert first is not None
-    assert app_module.acquire_single_instance(tmp_path) is None
-    first.unlock()
-    again = app_module.acquire_single_instance(tmp_path)
-    assert again is not None
-    again.unlock()
+def test_app_opens_a_taskbar_window_with_the_editor(running_app):
+    assert running_app.main.isVisible()
+    assert running_app.main.windowTitle() == "PVPTimer"
+    assert running_app.main.centralWidget().isAncestorOf(running_app.editor)
+
+
+def test_header_actions_are_wired(running_app, monkeypatch):
+    opened = []
+    monkeypatch.setattr(running_app, "open_settings", lambda: opened.append(True))
+    running_app.main.settings_requested.emit()
+    assert opened == [True]
+    running_app.main.test_timer_requested.emit()
+    assert [v.ability_id for v in running_app.timers.snapshot()] == ["debug_test"]
+    running_app.main.move_button.click()
+    assert running_app.overlay._move_mode is True
+    running_app.main.move_button.click()
+    assert running_app.overlay._move_mode is False
+
+
+def test_warnings_go_to_the_window_banner(qtbot, tmp_path, monkeypatch):
+    monkeypatch.setattr(app_module.paths, "model_dir", lambda *a: tmp_path / "no-model")
+    monkeypatch.setattr(app_module.PvpTimerApp, "open_settings", lambda self: None)
+    application = app_module.PvpTimerApp(QApplication.instance())
+    try:
+        assert application.main.banner.isVisible()
+        assert "No abilities saved yet" in application.main.banner_label.text()             or "Speech model not found" in application.main.banner_label.text()
+    finally:
+        application.shutdown()
+
+
+def test_no_abilities_hint_clears_once_an_ability_is_added(qtbot, tmp_path, monkeypatch, make_ability):
+    monkeypatch.setattr(app_module.paths, "model_dir", lambda *a: tmp_path / "no-model")
+    monkeypatch.setattr(app_module.PvpTimerApp, "open_settings", lambda self: None)
+    application = app_module.PvpTimerApp(QApplication.instance())
+    try:
+        assert "No abilities saved yet" in application.main.banner_label.text()
+        application.store.upsert(make_ability())
+        assert "No abilities saved yet" not in application.main.banner_label.text()
+    finally:
+        application.shutdown()

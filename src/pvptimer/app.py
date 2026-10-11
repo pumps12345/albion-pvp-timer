@@ -1,19 +1,20 @@
-"""Application wiring: tray icon, overlay, timers, push-to-talk, speech, editor and settings."""
+"""Application wiring: main window, overlay, timers, push-to-talk, speech, editor and settings."""
 import logging
 import sys
 import time
 from logging.handlers import RotatingFileHandler
-from pathlib import Path
 from types import SimpleNamespace
 
-from PySide6.QtCore import QLockFile, QObject, Qt, QThread, QTimer, Signal
-from PySide6.QtGui import QAction, QColor, QIcon, QPainter, QPen, QPixmap
-from PySide6.QtWidgets import QApplication, QMenu, QMessageBox, QSystemTrayIcon
+from PySide6.QtCore import QObject, Qt, QThread, QTimer, Signal
+from PySide6.QtGui import QColor, QIcon, QPainter, QPen, QPixmap
+from PySide6.QtWidgets import QApplication, QMessageBox
 
 from . import paths
 from .beep import ReadyBeep
 from .editor import EditorWindow
 from .hotkey import PttListener
+from .instance import InstanceServer, acquire_single_instance, ask_running_instance_to_show
+from .main_window import MainWindow
 from .overlay import OverlayWindow
 from .router import Action, decide
 from .settings import Settings, load_settings, save_settings
@@ -25,6 +26,7 @@ from .timers import TimerManager
 TICK_MS = 66  # ~15 fps
 TEST_WINDOW_S = 10.0
 DEBUG_ABILITY = SimpleNamespace(id="debug_test", name="Test timer", cooldown_s=8.0)
+NO_ABILITIES = "No abilities saved yet. Use + Add below to add the enemy abilities you want to call out."
 log = logging.getLogger("pvptimer")
 
 
@@ -79,14 +81,20 @@ class PvpTimerApp(QObject):
         self.speech.error.connect(self._notify)
         self.store.abilities_changed.connect(self._push_phrases)
 
-        self.editor: EditorWindow | None = None
         self._test_deadline = 0.0
         self._settings_open = False
+        self._shut_down = False
 
-        self.tray = QSystemTrayIcon(make_icon())
-        self.tray.setToolTip("PVPTimer")
-        self.tray.setContextMenu(self._build_menu())
-        self.tray.show()
+        self.editor = EditorWindow(self.store, self.speech.unknown_words)
+        self.editor.test_requested.connect(self._arm_test)
+        self.main = MainWindow(self.editor, make_icon())
+        self.main.move_overlay_toggled.connect(self.overlay.set_move_mode)
+        self.main.settings_requested.connect(lambda: self.open_settings())
+        self.main.test_timer_requested.connect(lambda: self.timers.start(DEBUG_ABILITY))
+        self.main.quit_requested.connect(self.quit)
+        self._instance = InstanceServer()
+        self._instance.activated.connect(self.main.bring_to_front)
+        self.store.abilities_changed.connect(self._on_abilities_changed)
 
         self._tick = QTimer(self)
         self._tick.setInterval(TICK_MS)
@@ -94,6 +102,7 @@ class PvpTimerApp(QObject):
         self._tick.start()
 
         self.overlay.show()
+        self.main.show()
         self._push_phrases()
         self._speech_thread.start()
         self.ptt.start(s.ptt)
@@ -102,30 +111,19 @@ class PvpTimerApp(QObject):
             if warning:
                 self._notify(warning)
         if not self.store.abilities():
-            self._notify("No abilities saved yet. Right-click the tray icon → Editor to add the "
-                         "enemy abilities you want to call out.")
+            self._notify(NO_ABILITIES)
         if s.ptt is None:
             QTimer.singleShot(0, self.open_settings)  # first run: ask for the push-to-talk key
-
-    def _build_menu(self) -> QMenu:
-        menu = QMenu()
-        menu.addAction("Editor", self.open_editor)
-        self._move_action = QAction("Move overlay", menu, checkable=True)
-        self._move_action.toggled.connect(self.overlay.set_move_mode)
-        menu.addAction(self._move_action)
-        menu.addAction("Settings", self.open_settings)
-        menu.addSeparator()
-        menu.addAction("Debug: fire test timer", lambda: self.timers.start(DEBUG_ABILITY))
-        menu.addSeparator()
-        menu.addAction("Quit", self.quit)
-        self._menu = menu
-        return menu
 
     # runtime ------------------------------------------------------------
     def _on_tick(self) -> None:
         if self.timers.ready_events():  # before overlay paints, which calls snapshot()
             self.beep.play()
         self.overlay.update()
+
+    def _on_abilities_changed(self) -> None:
+        if self.store.abilities():
+            self.main.clear_warning(NO_ABILITIES)
 
     def _push_phrases(self) -> None:
         self.phrases_changed.emit(self.store.phrases())
@@ -136,8 +134,7 @@ class PvpTimerApp(QObject):
         decision = decide(text, self.store.match, test_mode)
         log.info("heard %r -> %s", decision.text, decision.action.value)
         if decision.action is Action.TEST_RESULT:
-            if self.editor is not None:
-                self.editor.show_test_result(decision.text, decision.ability)
+            self.editor.show_test_result(decision.text, decision.ability)
         elif decision.action is Action.CLEAR_ALL:
             self.timers.clear_all()
         elif decision.action is Action.CLEAR:
@@ -153,12 +150,11 @@ class PvpTimerApp(QObject):
             self._notify(f"{len(flagged)} abilities have phrases with unrecognized words "
                          f"({', '.join(flagged[:5])}). Open the Editor to respell them.")
         self._push_phrases()  # rebuild the grammar now that the vocabulary is known
-        if self.editor is not None:
-            self.editor.refresh()
+        self.editor.refresh()
 
     def _notify(self, message: str) -> None:
         log.warning(message)
-        self.tray.showMessage("PVPTimer", message, QSystemTrayIcon.MessageIcon.Warning, 6000)
+        self.main.show_warning(message)
 
     def _on_ptt_failed(self, message: str) -> None:
         self._notify(message)
@@ -171,12 +167,7 @@ class PvpTimerApp(QObject):
 
     # windows ------------------------------------------------------------
     def open_editor(self) -> None:
-        if self.editor is None:
-            self.editor = EditorWindow(self.store, self.speech.unknown_words)
-            self.editor.test_requested.connect(self._arm_test)
-        self.editor.show()
-        self.editor.raise_()
-        self.editor.activateWindow()
+        self.main.bring_to_front()
 
     def _arm_test(self) -> None:
         self._test_deadline = time.monotonic() + TEST_WINDOW_S
@@ -192,7 +183,7 @@ class PvpTimerApp(QObject):
             except Exception as exc:
                 log.warning("could not list audio devices: %s", exc)
                 devices = []
-            dialog = SettingsDialog(self.settings, devices, self.ptt)
+            dialog = SettingsDialog(self.settings, devices, self.ptt, parent=self.main)
             if dialog.exec():
                 self._apply_settings(dialog.result_settings())
         finally:
@@ -213,28 +204,31 @@ class PvpTimerApp(QObject):
 
     # shutdown -----------------------------------------------------------
     def shutdown(self) -> None:
+        if self._shut_down:
+            return
+        self._shut_down = True
         self._tick.stop()
+        self._instance.close()
         self.ptt.cancel_capture()
         self.ptt.stop()
         self._speech_thread.quit()
         self._speech_thread.wait(2000)
         self.speech.stop()
-        if self.editor is not None:
-            self.editor.close()
         self.overlay.close()
-        self.tray.hide()
+        self.main.close()  # its closeEvent calls quit(), which is a no-op once shut down
 
     def quit(self) -> None:
+        if self._shut_down:
+            return
         self.shutdown()
         self._qapp.quit()
 
 
-def acquire_single_instance(home: Path) -> QLockFile | None:
-    """Lock held for the app's lifetime. None means another instance is already running,
-    which must not start: two instances would overwrite each other's ability edits."""
-    lock = QLockFile(str(home / "pvptimer.lock"))
-    lock.setStaleLockTime(0)  # a lock left by a crashed instance is detected by its dead PID
-    return lock if lock.tryLock(100) else None
+def set_windows_app_id() -> None:
+    """Give the process its own taskbar identity so Windows shows PVPTimer's icon, not Python's."""
+    if sys.platform == "win32":
+        import ctypes
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("PVPTimer.App")
 
 
 def setup_logging() -> None:
@@ -248,14 +242,16 @@ def setup_logging() -> None:
 
 
 def main() -> int:
+    set_windows_app_id()
     setup_logging()
     qapp = QApplication(sys.argv)
+    qapp.setWindowIcon(make_icon())
     lock = acquire_single_instance(paths.app_data_dir())
     if lock is None:
-        QMessageBox.information(None, "PVPTimer", "PVPTimer is already running. Look for its icon "
-                                "in the system tray (you may need to click ^ to see it).")
-        return 1
-    qapp.setQuitOnLastWindowClosed(False)
+        if not ask_running_instance_to_show():
+            QMessageBox.information(None, "PVPTimer", "PVPTimer is already running. Check your taskbar.")
+        return 0
+    qapp.setQuitOnLastWindowClosed(False)  # the overlay is a window too; quitting is explicit
     app = PvpTimerApp(qapp)  # noqa: F841  (kept alive for the event loop)
     qapp.aboutToQuit.connect(lock.unlock)
     return qapp.exec()

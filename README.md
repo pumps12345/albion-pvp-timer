@@ -10,14 +10,18 @@ of your screen.
 
 ## Using it
 
-1. Unzip `PVPTimer-x.y.z.zip` anywhere and run `PVPTimer.exe`. It lives in the system tray.
+1. Unzip `PVPTimer-x.y.z.zip` anywhere and run `PVPTimer.exe`. The PVPTimer window opens
+   with your ability list.
 2. On first run, pick your push-to-talk key or mouse side button. Using the same key as
    Discord works well: your callout to the team also starts the timer.
-3. Tray → **Editor** to add abilities: a name, slot, cooldown in seconds, and one or more
+3. Click **+ Add** to add abilities: a name, slot, cooldown in seconds, and one or more
    phrases you'll say. Use **Test phrase** to check how the app hears you.
 4. Run Albion in **borderless fullscreen** or **windowed** mode. Exclusive fullscreen hides
    the overlay (the ready beep still plays).
-5. Tray → **Move overlay** to drag the timers where you want them.
+5. Click **⇕ Move overlay** to drag the timers where you want them, then click it again.
+   **⚙ Settings → Overlay appearance** changes bar colors and size; **▶ Test timer** shows
+   a sample.
+6. **Minimize** the window while you play. Closing it (✕ or **Quit**) stops the timers.
 
 Voice commands: any saved phrase starts or restarts that ability's timer.
 `clear <phrase>` removes one timer. `clear all` removes every timer.
