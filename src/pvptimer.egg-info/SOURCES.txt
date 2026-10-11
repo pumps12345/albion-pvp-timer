@@ -1,8 +1,0 @@
-pyproject.toml
-src/pvptimer/__init__.py
-src/pvptimer.egg-info/PKG-INFO
-src/pvptimer.egg-info/SOURCES.txt
-src/pvptimer.egg-info/dependency_links.txt
-src/pvptimer.egg-info/entry_points.txt
-src/pvptimer.egg-info/requires.txt
-src/pvptimer.egg-info/top_level.txt
