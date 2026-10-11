@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: pvptimer
+Version: 0.1.0
+Summary: Voice-triggered enemy cooldown overlay for Albion Online
+Requires-Python: >=3.13
+Requires-Dist: PySide6>=6.8
+Requires-Dist: vosk>=0.3.45
+Requires-Dist: sounddevice>=0.5
+Requires-Dist: pynput>=1.7.7
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: pytest-qt>=4.4; extra == "dev"
+Requires-Dist: pyinstaller>=6.10; extra == "dev"
