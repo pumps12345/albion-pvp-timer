@@ -3,11 +3,12 @@ import logging
 import sys
 import time
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 from types import SimpleNamespace
 
-from PySide6.QtCore import QObject, Qt, QThread, QTimer, Signal
+from PySide6.QtCore import QLockFile, QObject, Qt, QThread, QTimer, Signal
 from PySide6.QtGui import QAction, QColor, QIcon, QPainter, QPen, QPixmap
-from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
+from PySide6.QtWidgets import QApplication, QMenu, QMessageBox, QSystemTrayIcon
 
 from . import paths
 from .beep import ReadyBeep
@@ -225,6 +226,14 @@ class PvpTimerApp(QObject):
         self._qapp.quit()
 
 
+def acquire_single_instance(home: Path) -> QLockFile | None:
+    """Lock held for the app's lifetime. None means another instance is already running,
+    which must not start: two instances would overwrite each other's ability edits."""
+    lock = QLockFile(str(home / "pvptimer.lock"))
+    lock.setStaleLockTime(0)  # a lock left by a crashed instance is detected by its dead PID
+    return lock if lock.tryLock(100) else None
+
+
 def setup_logging() -> None:
     handler = RotatingFileHandler(paths.app_data_dir() / "pvptimer.log", maxBytes=1_000_000,
                                   backupCount=3, encoding="utf-8")
@@ -238,6 +247,12 @@ def setup_logging() -> None:
 def main() -> int:
     setup_logging()
     qapp = QApplication(sys.argv)
+    lock = acquire_single_instance(paths.app_data_dir())
+    if lock is None:
+        QMessageBox.information(None, "PVPTimer", "PVPTimer is already running. Look for its icon "
+                                "in the system tray (you may need to click ^ to see it).")
+        return 1
     qapp.setQuitOnLastWindowClosed(False)
     app = PvpTimerApp(qapp)  # noqa: F841  (kept alive for the event loop)
+    qapp.aboutToQuit.connect(lock.unlock)
     return qapp.exec()

@@ -66,3 +66,13 @@ def test_applying_settings_updates_components_and_saves(running_app):
     assert running_app.timers.warning_s == 5.0
     saved, _ = load_settings(paths.app_data_dir() / "settings.json")
     assert saved.speech_offset_s == 1.5
+
+
+def test_only_one_instance_can_hold_the_lock(tmp_path):
+    first = app_module.acquire_single_instance(tmp_path)
+    assert first is not None
+    assert app_module.acquire_single_instance(tmp_path) is None
+    first.unlock()
+    again = app_module.acquire_single_instance(tmp_path)
+    assert again is not None
+    again.unlock()
