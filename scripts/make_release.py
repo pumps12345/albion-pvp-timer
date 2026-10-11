@@ -33,6 +33,13 @@ QUICK START
 Your abilities, settings and log are stored in %APPDATA%\\PVPTimer.
 Full instructions and troubleshooting: {REPO_URL}#readme
 
+FAIR PLAY
+  PVPTimer only listens to your microphone and draws a window over your screen. It never reads or
+  changes the game, its memory or its network traffic, and never presses keys for you. Albion
+  Online's Terms and Conditions restrict third-party tools that give players an advantage, and
+  whether this one counts is up to Sandbox Interactive. Read their rules and use PVPTimer at your
+  own risk: https://albiononline.com/terms_and_conditions
+
 PVPTimer is a fan-made tool, not affiliated with Sandbox Interactive GmbH.
 See LICENSE and THIRD_PARTY_NOTICES.md for licenses.
 """
