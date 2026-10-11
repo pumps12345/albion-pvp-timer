@@ -6,6 +6,7 @@ from typing import Any, Iterable
 SLOTS = ("Q", "W", "E", "R", "D", "F", "Passive")
 MAX_COOLDOWN_S = 600.0
 RESERVED_WORD = "clear"
+CATEGORIES = ("weapon", "armor_item", "armor_ability", "custom")  # "custom" = added by the user
 FORMAT_VERSION = 1
 
 
@@ -32,14 +33,15 @@ class Ability:
     slot: str
     cooldown_s: float
     phrases: tuple[str, ...]
+    category: str = "custom"
 
     def normalized(self) -> "Ability":
         phrases = tuple(p for p in (normalize_phrase(x) for x in self.phrases) if p)
         return replace(self, name=self.name.strip(), phrases=phrases)
 
     def to_json(self) -> dict[str, Any]:
-        return {"id": self.id, "name": self.name, "slot": self.slot,
-                "cooldown_s": self.cooldown_s, "phrases": list(self.phrases)}
+        return {"id": self.id, "name": self.name, "slot": self.slot, "cooldown_s": self.cooldown_s,
+                "phrases": list(self.phrases), "category": self.category}
 
     @staticmethod
     def from_json(data: dict[str, Any]) -> "Ability":
@@ -52,6 +54,7 @@ class Ability:
             slot=str(data["slot"]),
             cooldown_s=float(data["cooldown_s"]),
             phrases=tuple(str(p) for p in phrases),
+            category=str(data.get("category", "custom")),  # files from before categories existed
         ).normalized()
 
 
@@ -63,6 +66,8 @@ def validate(ability: Ability, others: Iterable[Ability]) -> list[str]:
         errors.append("Name is required.")
     if a.slot not in SLOTS:
         errors.append(f"Slot must be one of: {', '.join(SLOTS)}.")
+    if a.category not in CATEGORIES:
+        errors.append(f"Category must be one of: {', '.join(CATEGORIES)}.")
     if not (0 < a.cooldown_s <= MAX_COOLDOWN_S):
         errors.append(f"Cooldown must be greater than 0 and at most {MAX_COOLDOWN_S:g} seconds.")
     if not a.phrases:

@@ -143,3 +143,67 @@ def test_test_result_is_shown_only_while_waiting(qtbot, editor, store):
 
 def test_describe_test_result_for_unknown_speech():
     assert describe_test_result("[unk]", None, "x", False) ==         "Heard speech, but it isn't one of your saved phrases."
+
+
+@pytest.fixture
+def categorized(qtbot, tmp_path, make_ability):
+    defaults = tmp_path / "cat_defaults.json"
+    defaults.write_text(json.dumps(ability_file([
+        make_ability(category="weapon"),
+        make_ability(id="hh_ret", name="Hunter Hood – Retaliate D", slot="D", cooldown_s=45.0,
+                     phrases=("hunter hood retaliate",), category="armor_item"),
+        make_ability(id="ret_d", name="Retaliate D", slot="D", cooldown_s=45.0,
+                     phrases=("retaliate d", "retaliate"), category="armor_ability"),
+    ])), encoding="utf-8")
+    s = AbilityStore(defaults, tmp_path / "cat_user.json")
+    s.load()
+    window = EditorWindow(s, fake_unknown)
+    qtbot.addWidget(window)
+    return window, s
+
+
+def tab_texts(editor):
+    return [editor.tabs.tabText(i) for i in range(editor.tabs.count())]
+
+
+def visible_names(editor):
+    return [editor.table.item(r, 0).text() for r in range(editor.table.rowCount())
+            if not editor.table.isRowHidden(r)]
+
+
+def test_tabs_show_counts_per_category(categorized):
+    editor, _ = categorized
+    assert tab_texts(editor) == ["All 3", "Weapons 1", "Armor items 1", "Armor abilities 1", "Custom 0"]
+
+
+def test_tabs_filter_the_list_together_with_search(categorized):
+    editor, _ = categorized
+    editor.tabs.setCurrentIndex(3)  # Armor abilities
+    assert visible_names(editor) == ["Retaliate D"]
+    editor.tabs.setCurrentIndex(0)  # All
+    editor.search_edit.setText("retaliate")
+    assert visible_names(editor) == ["Hunter Hood – Retaliate D", "Retaliate D"]
+    editor.tabs.setCurrentIndex(2)  # Armor items + search
+    assert visible_names(editor) == ["Hunter Hood – Retaliate D"]
+
+
+def test_new_ability_saved_on_another_tab_shows_up_under_custom(categorized):
+    editor, store = categorized
+    editor.tabs.setCurrentIndex(1)  # Weapons
+    editor.add_button.click()
+    add(editor, "Purge Spell", "purge spell")
+    assert store.get("purge_spell").category == "custom"
+    assert editor.tabs.currentIndex() == 4
+    assert visible_names(editor) == ["Purge Spell"]
+    assert tab_texts(editor)[4] == "Custom 1"
+
+
+def test_editing_a_built_in_keeps_its_category(categorized):
+    editor, store = categorized
+    editor.tabs.setCurrentIndex(3)
+    editor.table.selectRow(2)  # rows are sorted by name: Bloodletter E, Hunter Hood…, Retaliate D
+    assert editor.name_edit.text() == "Retaliate D"
+    editor.cooldown_spin.setValue(40.0)
+    editor.save_button.click()
+    assert store.get("ret_d").category == "armor_ability"
+    assert store.get("ret_d").cooldown_s == 40.0

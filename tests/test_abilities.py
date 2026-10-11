@@ -90,3 +90,14 @@ def test_parse_rejects_wrong_version():
 def test_parse_rejects_malformed_entry():
     with pytest.raises((KeyError, TypeError, ValueError)):
         parse_ability_file({"version": 1, "abilities": [{"id": "x"}]})
+
+
+def test_category_round_trips_and_defaults_to_custom(make_ability):
+    weapon = make_ability(category="weapon")
+    assert parse_ability_file(ability_file([weapon])) == ([weapon], [])
+    old_entry = {"id": "x", "name": "X", "slot": "E", "cooldown_s": 5, "phrases": ["x ray"]}
+    assert parse_ability_file({"version": 1, "abilities": [old_entry]})[0][0].category == "custom"
+
+
+def test_unknown_category_is_rejected(make_ability):
+    assert "Category must be one of: weapon, armor_item, armor_ability, custom." in         validate(make_ability(category="pets"), [])

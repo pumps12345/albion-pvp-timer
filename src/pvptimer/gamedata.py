@@ -161,42 +161,60 @@ def speakable(text: str, is_known: Callable[[str], bool]) -> str:
 
 def to_abilities(game: Iterable[GameAbility],
                  is_known: Callable[[str], bool]) -> tuple[list[Ability], list[str]]:
-    """App abilities with generated phrases. Phrases already taken by an earlier entry are dropped
-    (an entry left with none is skipped); every drop is reported."""
+    """App abilities with generated phrases: weapon E entries, armor entries per item, then one
+    entry per armor ability ("Dodge F") for players who call the effect rather than the item.
+    Phrases already taken by an earlier entry are dropped (an entry left with none is skipped);
+    every drop is reported."""
     game = list(game)
+    say = lambda text: speakable(text, is_known)  # noqa: E731
     # distinct E abilities per weapon name (several item ids can share one display name)
     weapon_e_counts = Counter(item for item, _ in
                               dict.fromkeys((g.item_name, g.ability_name) for g in game if g.kind == "weapon"))
+    candidates: list[tuple[str, list[str], str, float, str]] = []  # name, phrases, slot, cooldown, category
+    for g in game:
+        if g.kind == "weapon" and weapon_e_counts[g.item_name] == 1:
+            candidates.append((f"{g.item_name} E", [f"{say(g.item_name)} e", say(g.item_name)],
+                               g.slot, g.cooldown_s, "weapon"))
+        elif g.kind == "weapon":
+            candidates.append((f"{g.item_name} E – {g.ability_name}", [f"{say(g.item_name)} {say(g.ability_name)}"],
+                               g.slot, g.cooldown_s, "weapon"))
+        else:
+            candidates.append((f"{g.item_name} – {g.ability_name} {g.slot}",
+                               [f"{say(g.item_name)} {say(g.ability_name)}"], g.slot, g.cooldown_s, "armor_item"))
+    shared: dict[tuple[str, str], list[float]] = {}
+    for g in game:
+        if g.kind == "armor":
+            cooldowns = shared.setdefault((g.ability_name, g.slot), [])
+            if g.cooldown_s not in cooldowns:
+                cooldowns.append(g.cooldown_s)
+    for (ability, slot), cooldowns in shared.items():
+        for cooldown in cooldowns:
+            name = f"{ability} {slot}" if len(cooldowns) == 1 else f"{ability} {slot} ({cooldown:g} s)"
+            candidates.append((name, [f"{say(ability)} {slot.lower()}", say(ability)], slot, cooldown,
+                               "armor_ability"))
+
     abilities: list[Ability] = []
     notes: list[str] = []
     owners: dict[str, str] = {}
     ids: set[str] = set()
-    for g in game:
-        item, ability = speakable(g.item_name, is_known), speakable(g.ability_name, is_known)
-        if g.kind == "weapon" and weapon_e_counts[g.item_name] == 1:
-            name, phrases = f"{g.item_name} E", [f"{item} e", item]
-        elif g.kind == "weapon":
-            name, phrases = f"{g.item_name} E – {g.ability_name}", [f"{item} {ability}"]
-        else:
-            name, phrases = f"{g.item_name} – {g.ability_name} {g.slot}", [f"{item} {ability}"]
-        if not 0 < g.cooldown_s <= MAX_COOLDOWN_S:
-            notes.append(f"Skipped {name}: cooldown {g.cooldown_s:g} s is out of range")
+    for name, phrases, slot, cooldown, category in candidates:
+        if not 0 < cooldown <= MAX_COOLDOWN_S:
+            notes.append(f"Skipped {name}: cooldown {cooldown:g} s is out of range")
             continue
-        kept = []
+        kept, dropped = [], []
         for phrase in phrases:
             if phrase.split()[0] == RESERVED_WORD:
-                notes.append(f"{name}: dropped phrase '{phrase}' (starts with '{RESERVED_WORD}')")
-            elif phrase in owners or phrase in kept:
-                if phrase not in kept:
-                    notes.append(f"{name}: dropped phrase '{phrase}' (already used by {owners[phrase]})")
-            else:
+                dropped.append(f"{name}: dropped phrase '{phrase}' (starts with '{RESERVED_WORD}')")
+            elif phrase in owners:
+                dropped.append(f"{name}: dropped phrase '{phrase}' (already used by {owners[phrase]})")
+            elif phrase not in kept:
                 kept.append(phrase)
         if not kept:
-            notes = [n for n in notes if not n.startswith(f"{name}: dropped")]
             notes.append(f"Skipped {name}: all its phrases are already used by "
                          f"{', '.join(dict.fromkeys(owners[p] for p in phrases if p in owners))}")
             continue
-        entry = Ability(make_id(name, ids), name, g.slot, g.cooldown_s, tuple(kept))
+        notes.extend(dropped)
+        entry = Ability(make_id(name, ids), name, slot, cooldown, tuple(kept), category)
         ids.add(entry.id)
         owners.update({p: name for p in kept})
         abilities.append(entry)

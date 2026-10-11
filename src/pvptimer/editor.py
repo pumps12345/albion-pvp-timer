@@ -5,7 +5,7 @@ from typing import Callable, Iterable
 from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtWidgets import (QAbstractItemView, QComboBox, QDoubleSpinBox, QFileDialog, QFormLayout,
                                QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMessageBox, QPlainTextEdit,
-                               QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
+                               QPushButton, QTabBar, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 from .abilities import MAX_COOLDOWN_S, SLOTS, Ability
 from .router import UNKNOWN_SPEECH
@@ -13,6 +13,9 @@ from .store import AbilityStore
 
 COLUMNS = ("Name", "Slot", "Cooldown", "Voice phrases", "Status")
 STATUS_COLUMN = 4
+TABS = (("all", "All"), ("weapon", "Weapons"), ("armor_item", "Armor items"),
+        ("armor_ability", "Armor abilities"), ("custom", "Custom"))
+CATEGORY_ROLE = Qt.ItemDataRole.UserRole + 1
 TEST_TIMEOUT_MS = 10_000
 UnknownWords = Callable[[Iterable[str]], set[str]]
 
@@ -69,14 +72,23 @@ class EditorWindow(QWidget):
         toolbar.addStretch(1)
         toolbar.addWidget(self.search_edit)
 
-        # table
+        # category tabs + table
+        self.tabs = QTabBar()
+        self.tabs.setExpanding(False)
+        for index, (key, label) in enumerate(TABS):
+            self.tabs.addTab(label)
+            self.tabs.setTabData(index, key)
         self.table = QTableWidget(0, len(COLUMNS))
         self.table.setHorizontalHeaderLabels(COLUMNS)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.table.verticalHeader().setVisible(False)
-        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+        header = self.table.horizontalHeader()
+        for column in (1, 2, STATUS_COLUMN):
+            header.setSectionResizeMode(column, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+        self.table.setColumnWidth(0, 250)
 
         # form
         self.form_title = QLabel()
@@ -116,6 +128,7 @@ class EditorWindow(QWidget):
 
         layout = QVBoxLayout(self)
         layout.addLayout(toolbar)
+        layout.addWidget(self.tabs)
         layout.addWidget(self.table, 1)
         layout.addWidget(self.form_title)
         layout.addLayout(form)
@@ -132,6 +145,7 @@ class EditorWindow(QWidget):
         self.import_button.clicked.connect(self._import)
         self.export_button.clicked.connect(self._export)
         self.search_edit.textChanged.connect(self._apply_filter)
+        self.tabs.currentChanged.connect(lambda *_: self._apply_filter(self.search_edit.text()))
         self.table.itemSelectionChanged.connect(self._on_selection)
         self.name_edit.textChanged.connect(lambda *_: self._validate_form())
         self.phrases_edit.textChanged.connect(lambda *_: self._validate_form())
@@ -157,11 +171,16 @@ class EditorWindow(QWidget):
             for col, text in enumerate(cells):
                 item = QTableWidgetItem(text)
                 item.setData(Qt.ItemDataRole.UserRole, ability.id)
+                item.setData(CATEGORY_ROLE, ability.category)
                 if col == STATUS_COLUMN:
                     item.setToolTip(tip)
                 self.table.setItem(row, col, item)
         self._select_row_for(self._editing.id if self._editing else None)
         self.table.blockSignals(False)
+        counts = {key: sum(a.category == key for a in abilities) for key, _ in TABS}
+        counts["all"] = len(abilities)
+        for index, (key, label) in enumerate(TABS):
+            self.tabs.setTabText(index, f"{label} {counts[key]}")
         self._apply_filter(self.search_edit.text())
         if self._editing is not None and self._store.get(self._editing.id) is None:
             self._load_form(None)
@@ -175,9 +194,12 @@ class EditorWindow(QWidget):
 
     def _apply_filter(self, text: str) -> None:
         needle = text.casefold().strip()
+        tab = self.tabs.tabData(self.tabs.currentIndex())
         for row in range(self.table.rowCount()):
-            haystack = f"{self.table.item(row, 0).text()} {self.table.item(row, 3).text()}".casefold()
-            self.table.setRowHidden(row, bool(needle) and needle not in haystack)
+            name_item = self.table.item(row, 0)
+            haystack = f"{name_item.text()} {self.table.item(row, 3).text()}".casefold()
+            wrong_tab = tab != "all" and name_item.data(CATEGORY_ROLE) != tab
+            self.table.setRowHidden(row, wrong_tab or (bool(needle) and needle not in haystack))
 
     def _on_selection(self) -> None:
         rows = self.table.selectionModel().selectedRows()
@@ -193,6 +215,7 @@ class EditorWindow(QWidget):
             slot=self.slot_combo.currentText(),
             cooldown_s=round(self.cooldown_spin.value(), 1),
             phrases=tuple(self.phrases_edit.toPlainText().splitlines()),
+            category=self._editing.category if self._editing else "custom",
         )
 
     def is_dirty(self) -> bool:
@@ -233,10 +256,16 @@ class EditorWindow(QWidget):
             return
         # Start a blank form right away so several abilities can be entered in a row.
         self._editing = None
+        self._show_tab_for(stored.category)
         self.refresh()
         self._load_form(None)
         self.form_title.setText(f"New ability (saved “{stored.name}”)")
         self.name_edit.setFocus()
+
+    def _show_tab_for(self, category: str) -> None:
+        """Switch tabs if the current one would hide an ability that was just saved."""
+        if self.tabs.tabData(self.tabs.currentIndex()) not in ("all", category):
+            self.tabs.setCurrentIndex(next(i for i, (key, _) in enumerate(TABS) if key == category))
 
     def _revert(self) -> None:
         self._load_form(self._editing)

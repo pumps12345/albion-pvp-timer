@@ -176,3 +176,25 @@ def test_weapon_with_two_e_options_names_each_by_ability():
             GameAbility("Dagger", "Mend", "E", 12.0, "weapon")]
     names = [a.name for a in to_abilities(game, known)[0]]
     assert names == ["Dagger E – Stab", "Dagger E – Mend"]
+
+
+def test_entries_carry_categories_and_armor_abilities_are_added_once(game):
+    abilities, notes = to_abilities(game[0], known)
+    by_name = {a.name: a for a in abilities}
+    assert by_name["Bloodletter E"].category == "weapon"
+    assert by_name["Hunter Hood – Retaliate D"].category == "armor_item"
+    retaliate = by_name["Retaliate D"]
+    assert (retaliate.category, retaliate.slot, retaliate.cooldown_s) == ("armor_ability", "D", 45.0)
+    assert retaliate.phrases == ("retaliate d", "retaliate")
+    assert by_name["Mend R"].phrases == ("mend r", "mend")
+    assert sum(a.category == "armor_ability" for a in abilities) == 3   # Energy Shield D, Retaliate D, Mend R
+    assert notes == []
+
+
+def test_shared_armor_ability_with_different_cooldowns_keeps_the_first_and_reports_the_rest():
+    game = [GameAbility("Boots A", "Dodge", "F", 15.0, "armor"),
+            GameAbility("Boots B", "Dodge", "F", 15.0, "armor"),
+            GameAbility("Boots C", "Dodge", "F", 12.0, "armor")]
+    abilities, notes = to_abilities(game, known)
+    assert [a.name for a in abilities if a.category == "armor_ability"] == ["Dodge F (15 s)"]
+    assert notes == ["Skipped Dodge F (12 s): all its phrases are already used by Dodge F (15 s)"]
