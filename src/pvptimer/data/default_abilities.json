@@ -1,4 +1,3633 @@
 {
   "version": 1,
-  "abilities": []
+  "abilities": [
+    {
+      "id": "soldier_helmet_energizing_shield_d",
+      "name": "Soldier Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "soldier helmet energizing shield"
+      ]
+    },
+    {
+      "id": "soldier_helmet_stone_skin_d",
+      "name": "Soldier Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "soldier helmet stone skin"
+      ]
+    },
+    {
+      "id": "soldier_helmet_block_d",
+      "name": "Soldier Helmet – Block D",
+      "slot": "D",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "soldier helmet block"
+      ]
+    },
+    {
+      "id": "soldier_armor_mend_wounds_r",
+      "name": "Soldier Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "soldier armor mend wounds"
+      ]
+    },
+    {
+      "id": "soldier_armor_taunt_r",
+      "name": "Soldier Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "soldier armor taunt"
+      ]
+    },
+    {
+      "id": "soldier_armor_fury_r",
+      "name": "Soldier Armor – Fury R",
+      "slot": "R",
+      "cooldown_s": 35.0,
+      "phrases": [
+        "soldier armor fury"
+      ]
+    },
+    {
+      "id": "soldier_boots_dodge_f",
+      "name": "Soldier Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "soldier boots dodge"
+      ]
+    },
+    {
+      "id": "soldier_boots_rejuvenating_sprint_f",
+      "name": "Soldier Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "soldier boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "soldier_boots_wanderlust_f",
+      "name": "Soldier Boots – Wanderlust F",
+      "slot": "F",
+      "cooldown_s": 60.0,
+      "phrases": [
+        "soldier boots wanderlust"
+      ]
+    },
+    {
+      "id": "knight_helmet_energizing_shield_d",
+      "name": "Knight Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "knight helmet energizing shield"
+      ]
+    },
+    {
+      "id": "knight_helmet_stone_skin_d",
+      "name": "Knight Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "knight helmet stone skin"
+      ]
+    },
+    {
+      "id": "knight_helmet_displacement_immunity_d",
+      "name": "Knight Helmet – Displacement Immunity D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "knight helmet displacement immunity"
+      ]
+    },
+    {
+      "id": "knight_armor_mend_wounds_r",
+      "name": "Knight Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "knight armor mend wounds"
+      ]
+    },
+    {
+      "id": "knight_armor_taunt_r",
+      "name": "Knight Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "knight armor taunt"
+      ]
+    },
+    {
+      "id": "knight_armor_wind_wall_r",
+      "name": "Knight Armor – Wind Wall R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "knight armor wind wall"
+      ]
+    },
+    {
+      "id": "knight_boots_dodge_f",
+      "name": "Knight Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "knight boots dodge"
+      ]
+    },
+    {
+      "id": "knight_boots_rejuvenating_sprint_f",
+      "name": "Knight Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "knight boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "knight_boots_shield_charge_f",
+      "name": "Knight Boots – Shield Charge F",
+      "slot": "F",
+      "cooldown_s": 18.0,
+      "phrases": [
+        "knight boots shield charge"
+      ]
+    },
+    {
+      "id": "guardian_helmet_energizing_shield_d",
+      "name": "Guardian Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "guardian helmet energizing shield"
+      ]
+    },
+    {
+      "id": "guardian_helmet_stone_skin_d",
+      "name": "Guardian Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "guardian helmet stone skin"
+      ]
+    },
+    {
+      "id": "guardian_helmet_emergency_shield_d",
+      "name": "Guardian Helmet – Emergency Shield D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "guardian helmet emergency shield"
+      ]
+    },
+    {
+      "id": "guardian_armor_mend_wounds_r",
+      "name": "Guardian Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "guardian armor mend wounds"
+      ]
+    },
+    {
+      "id": "guardian_armor_taunt_r",
+      "name": "Guardian Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "guardian armor taunt"
+      ]
+    },
+    {
+      "id": "guardian_armor_enfeeble_aura_r",
+      "name": "Guardian Armor – Enfeeble Aura R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "guardian armor enfeeble aura"
+      ]
+    },
+    {
+      "id": "guardian_boots_dodge_f",
+      "name": "Guardian Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "guardian boots dodge"
+      ]
+    },
+    {
+      "id": "guardian_boots_rejuvenating_sprint_f",
+      "name": "Guardian Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "guardian boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "guardian_boots_giant_f",
+      "name": "Guardian Boots – Giant F",
+      "slot": "F",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "guardian boots giant"
+      ]
+    },
+    {
+      "id": "graveguard_helmet_energizing_shield_d",
+      "name": "Graveguard Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "grave guard helmet energizing shield"
+      ]
+    },
+    {
+      "id": "graveguard_helmet_stone_skin_d",
+      "name": "Graveguard Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "grave guard helmet stone skin"
+      ]
+    },
+    {
+      "id": "graveguard_helmet_sacrifice_d",
+      "name": "Graveguard Helmet – Sacrifice D",
+      "slot": "D",
+      "cooldown_s": 50.0,
+      "phrases": [
+        "grave guard helmet sacrifice"
+      ]
+    },
+    {
+      "id": "graveguard_armor_mend_wounds_r",
+      "name": "Graveguard Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "grave guard armor mend wounds"
+      ]
+    },
+    {
+      "id": "graveguard_armor_taunt_r",
+      "name": "Graveguard Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "grave guard armor taunt"
+      ]
+    },
+    {
+      "id": "graveguard_armor_soul_chain_r",
+      "name": "Graveguard Armor – Soul Chain R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "grave guard armor soul chain"
+      ]
+    },
+    {
+      "id": "graveguard_boots_dodge_f",
+      "name": "Graveguard Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "grave guard boots dodge"
+      ]
+    },
+    {
+      "id": "graveguard_boots_rejuvenating_sprint_f",
+      "name": "Graveguard Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "grave guard boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "graveguard_boots_battle_frenzy_f",
+      "name": "Graveguard Boots – Battle Frenzy F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "grave guard boots battle frenzy"
+      ]
+    },
+    {
+      "id": "demon_helmet_energizing_shield_d",
+      "name": "Demon Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "demon helmet energizing shield"
+      ]
+    },
+    {
+      "id": "demon_helmet_stone_skin_d",
+      "name": "Demon Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "demon helmet stone skin"
+      ]
+    },
+    {
+      "id": "demon_helmet_hush_d",
+      "name": "Demon Helmet – Hush D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "demon helmet hush"
+      ]
+    },
+    {
+      "id": "demon_armor_mend_wounds_r",
+      "name": "Demon Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "demon armor mend wounds"
+      ]
+    },
+    {
+      "id": "demon_armor_taunt_r",
+      "name": "Demon Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "demon armor taunt"
+      ]
+    },
+    {
+      "id": "demon_armor_protection_of_the_fiends_r",
+      "name": "Demon Armor – Protection of the Fiends R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "demon armor protection of the fiends"
+      ]
+    },
+    {
+      "id": "demon_boots_dodge_f",
+      "name": "Demon Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "demon boots dodge"
+      ]
+    },
+    {
+      "id": "demon_boots_rejuvenating_sprint_f",
+      "name": "Demon Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "demon boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "demon_boots_vengeful_sprint_f",
+      "name": "Demon Boots – Vengeful Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "demon boots vengeful sprint"
+      ]
+    },
+    {
+      "id": "judicator_helmet_energizing_shield_d",
+      "name": "Judicator Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "judy cater helmet energizing shield"
+      ]
+    },
+    {
+      "id": "judicator_helmet_stone_skin_d",
+      "name": "Judicator Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "judy cater helmet stone skin"
+      ]
+    },
+    {
+      "id": "judicator_helmet_electric_discharge_d",
+      "name": "Judicator Helmet – Electric Discharge D",
+      "slot": "D",
+      "cooldown_s": 45.0,
+      "phrases": [
+        "judy cater helmet electric discharge"
+      ]
+    },
+    {
+      "id": "judicator_armor_mend_wounds_r",
+      "name": "Judicator Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "judy cater armor mend wounds"
+      ]
+    },
+    {
+      "id": "judicator_armor_taunt_r",
+      "name": "Judicator Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "judy cater armor taunt"
+      ]
+    },
+    {
+      "id": "judicator_armor_force_shield_r",
+      "name": "Judicator Armor – Force Shield R",
+      "slot": "R",
+      "cooldown_s": 50.0,
+      "phrases": [
+        "judy cater armor force shield"
+      ]
+    },
+    {
+      "id": "judicator_boots_dodge_f",
+      "name": "Judicator Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "judy cater boots dodge"
+      ]
+    },
+    {
+      "id": "judicator_boots_rejuvenating_sprint_f",
+      "name": "Judicator Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "judy cater boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "judicator_boots_elbow_smash_f",
+      "name": "Judicator Boots – Elbow Smash F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "judy cater boots elbow smash"
+      ]
+    },
+    {
+      "id": "duskweaver_helmet_energizing_shield_d",
+      "name": "Duskweaver Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "dusk weaver helmet energizing shield"
+      ]
+    },
+    {
+      "id": "duskweaver_helmet_stone_skin_d",
+      "name": "Duskweaver Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "dusk weaver helmet stone skin"
+      ]
+    },
+    {
+      "id": "duskweaver_helmet_spider_s_thread_d",
+      "name": "Duskweaver Helmet – Spider's Thread D",
+      "slot": "D",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "dusk weaver helmet spider thread"
+      ]
+    },
+    {
+      "id": "duskweaver_armor_mend_wounds_r",
+      "name": "Duskweaver Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "dusk weaver armor mend wounds"
+      ]
+    },
+    {
+      "id": "duskweaver_armor_taunt_r",
+      "name": "Duskweaver Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "dusk weaver armor taunt"
+      ]
+    },
+    {
+      "id": "duskweaver_armor_mythical_web_r",
+      "name": "Duskweaver Armor – Mythical Web R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "dusk weaver armor mythical web"
+      ]
+    },
+    {
+      "id": "duskweaver_boots_dodge_f",
+      "name": "Duskweaver Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "dusk weaver boots dodge"
+      ]
+    },
+    {
+      "id": "duskweaver_boots_rejuvenating_sprint_f",
+      "name": "Duskweaver Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "dusk weaver boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "duskweaver_boots_crush_charge_f",
+      "name": "Duskweaver Boots – Crush Charge F",
+      "slot": "F",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "dusk weaver boots crush charge"
+      ]
+    },
+    {
+      "id": "helmet_of_valor_energizing_shield_d",
+      "name": "Helmet of Valor – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "helmet of valor energizing shield"
+      ]
+    },
+    {
+      "id": "helmet_of_valor_stone_skin_d",
+      "name": "Helmet of Valor – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "helmet of valor stone skin"
+      ]
+    },
+    {
+      "id": "helmet_of_valor_purifying_smoke_d",
+      "name": "Helmet of Valor – Purifying Smoke D",
+      "slot": "D",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "helmet of valor purifying smoke"
+      ]
+    },
+    {
+      "id": "armor_of_valor_mend_wounds_r",
+      "name": "Armor of Valor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "armor of valor mend wounds"
+      ]
+    },
+    {
+      "id": "armor_of_valor_taunt_r",
+      "name": "Armor of Valor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "armor of valor taunt"
+      ]
+    },
+    {
+      "id": "armor_of_valor_requite_r",
+      "name": "Armor of Valor – Requite R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "armor of valor re quite"
+      ]
+    },
+    {
+      "id": "boots_of_valor_dodge_f",
+      "name": "Boots of Valor – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "boots of valor dodge"
+      ]
+    },
+    {
+      "id": "boots_of_valor_rejuvenating_sprint_f",
+      "name": "Boots of Valor – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "boots of valor rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "boots_of_valor_premonition_f",
+      "name": "Boots of Valor – Premonition F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "boots of valor premonition"
+      ]
+    },
+    {
+      "id": "mercenary_hood_energizing_shield_d",
+      "name": "Mercenary Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "mercenary hood energizing shield"
+      ]
+    },
+    {
+      "id": "mercenary_hood_cleanse_d",
+      "name": "Mercenary Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "mercenary hood cleanse"
+      ]
+    },
+    {
+      "id": "mercenary_hood_howl_d",
+      "name": "Mercenary Hood – Howl D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "mercenary hood howl"
+      ]
+    },
+    {
+      "id": "mercenary_jacket_mend_wounds_r",
+      "name": "Mercenary Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "mercenary jacket mend wounds"
+      ]
+    },
+    {
+      "id": "mercenary_jacket_inferno_shield_r",
+      "name": "Mercenary Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "mercenary jacket inferno shield"
+      ]
+    },
+    {
+      "id": "mercenary_jacket_bloodlust_r",
+      "name": "Mercenary Jacket – Bloodlust R",
+      "slot": "R",
+      "cooldown_s": 60.0,
+      "phrases": [
+        "mercenary jacket bloodlust"
+      ]
+    },
+    {
+      "id": "mercenary_shoes_dodge_f",
+      "name": "Mercenary Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "mercenary shoes dodge"
+      ]
+    },
+    {
+      "id": "mercenary_shoes_refreshing_sprint_f",
+      "name": "Mercenary Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "mercenary shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "mercenary_shoes_break_free_f",
+      "name": "Mercenary Shoes – Break Free F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "mercenary shoes break free"
+      ]
+    },
+    {
+      "id": "hunter_hood_energizing_shield_d",
+      "name": "Hunter Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "hunter hood energizing shield"
+      ]
+    },
+    {
+      "id": "hunter_hood_cleanse_d",
+      "name": "Hunter Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "hunter hood cleanse"
+      ]
+    },
+    {
+      "id": "hunter_hood_retaliate_d",
+      "name": "Hunter Hood – Retaliate D",
+      "slot": "D",
+      "cooldown_s": 45.0,
+      "phrases": [
+        "hunter hood retaliate"
+      ]
+    },
+    {
+      "id": "hunter_jacket_mend_wounds_r",
+      "name": "Hunter Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "hunter jacket mend wounds"
+      ]
+    },
+    {
+      "id": "hunter_jacket_inferno_shield_r",
+      "name": "Hunter Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "hunter jacket inferno shield"
+      ]
+    },
+    {
+      "id": "hunter_jacket_haste_r",
+      "name": "Hunter Jacket – Haste R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "hunter jacket haste"
+      ]
+    },
+    {
+      "id": "hunter_shoes_dodge_f",
+      "name": "Hunter Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "hunter shoes dodge"
+      ]
+    },
+    {
+      "id": "hunter_shoes_refreshing_sprint_f",
+      "name": "Hunter Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "hunter shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "hunter_shoes_rush_f",
+      "name": "Hunter Shoes – Rush F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "hunter shoes rush"
+      ]
+    },
+    {
+      "id": "assassin_hood_energizing_shield_d",
+      "name": "Assassin Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "assassin hood energizing shield"
+      ]
+    },
+    {
+      "id": "assassin_hood_cleanse_d",
+      "name": "Assassin Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "assassin hood cleanse"
+      ]
+    },
+    {
+      "id": "assassin_hood_meditation_d",
+      "name": "Assassin Hood – Meditation D",
+      "slot": "D",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "assassin hood meditation"
+      ]
+    },
+    {
+      "id": "assassin_jacket_mend_wounds_r",
+      "name": "Assassin Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "assassin jacket mend wounds"
+      ]
+    },
+    {
+      "id": "assassin_jacket_inferno_shield_r",
+      "name": "Assassin Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "assassin jacket inferno shield"
+      ]
+    },
+    {
+      "id": "assassin_jacket_ambush_r",
+      "name": "Assassin Jacket – Ambush R",
+      "slot": "R",
+      "cooldown_s": 50.0,
+      "phrases": [
+        "assassin jacket ambush"
+      ]
+    },
+    {
+      "id": "assassin_shoes_dodge_f",
+      "name": "Assassin Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "assassin shoes dodge"
+      ]
+    },
+    {
+      "id": "assassin_shoes_refreshing_sprint_f",
+      "name": "Assassin Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "assassin shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "assassin_shoes_swift_cut_f",
+      "name": "Assassin Shoes – Swift Cut F",
+      "slot": "F",
+      "cooldown_s": 14.0,
+      "phrases": [
+        "assassin shoes swift cut"
+      ]
+    },
+    {
+      "id": "stalker_hood_energizing_shield_d",
+      "name": "Stalker Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "stalker hood energizing shield"
+      ]
+    },
+    {
+      "id": "stalker_hood_cleanse_d",
+      "name": "Stalker Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "stalker hood cleanse"
+      ]
+    },
+    {
+      "id": "stalker_hood_mortal_agony_d",
+      "name": "Stalker Hood – Mortal Agony D",
+      "slot": "D",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "stalker hood mortal agony"
+      ]
+    },
+    {
+      "id": "stalker_jacket_mend_wounds_r",
+      "name": "Stalker Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "stalker jacket mend wounds"
+      ]
+    },
+    {
+      "id": "stalker_jacket_inferno_shield_r",
+      "name": "Stalker Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "stalker jacket inferno shield"
+      ]
+    },
+    {
+      "id": "stalker_jacket_electric_field_r",
+      "name": "Stalker Jacket – Electric Field R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "stalker jacket electric field"
+      ]
+    },
+    {
+      "id": "stalker_shoes_dodge_f",
+      "name": "Stalker Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "stalker shoes dodge"
+      ]
+    },
+    {
+      "id": "stalker_shoes_refreshing_sprint_f",
+      "name": "Stalker Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "stalker shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "stalker_shoes_raging_blink_f",
+      "name": "Stalker Shoes – Raging Blink F",
+      "slot": "F",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "stalker shoes raging blink"
+      ]
+    },
+    {
+      "id": "hellion_hood_energizing_shield_d",
+      "name": "Hellion Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "hellion hood energizing shield"
+      ]
+    },
+    {
+      "id": "hellion_hood_cleanse_d",
+      "name": "Hellion Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "hellion hood cleanse"
+      ]
+    },
+    {
+      "id": "hellion_hood_smokebomb_d",
+      "name": "Hellion Hood – Smokebomb D",
+      "slot": "D",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "hellion hood smoke bomb"
+      ]
+    },
+    {
+      "id": "hellion_jacket_mend_wounds_r",
+      "name": "Hellion Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "hellion jacket mend wounds"
+      ]
+    },
+    {
+      "id": "hellion_jacket_inferno_shield_r",
+      "name": "Hellion Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "hellion jacket inferno shield"
+      ]
+    },
+    {
+      "id": "hellion_jacket_life_steal_aura_r",
+      "name": "Hellion Jacket – Life Steal Aura R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "hellion jacket life steal aura"
+      ]
+    },
+    {
+      "id": "hellion_shoes_dodge_f",
+      "name": "Hellion Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "hellion shoes dodge"
+      ]
+    },
+    {
+      "id": "hellion_shoes_refreshing_sprint_f",
+      "name": "Hellion Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "hellion shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "hellion_shoes_mark_of_sacrifice_f",
+      "name": "Hellion Shoes – Mark of Sacrifice F",
+      "slot": "F",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "hellion shoes mark of sacrifice"
+      ]
+    },
+    {
+      "id": "specter_hood_energizing_shield_d",
+      "name": "Specter Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "specter hood energizing shield"
+      ]
+    },
+    {
+      "id": "specter_hood_cleanse_d",
+      "name": "Specter Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "specter hood cleanse"
+      ]
+    },
+    {
+      "id": "specter_hood_flash_of_insight_d",
+      "name": "Specter Hood – Flash of Insight D",
+      "slot": "D",
+      "cooldown_s": 60.0,
+      "phrases": [
+        "specter hood flash of insight"
+      ]
+    },
+    {
+      "id": "specter_jacket_mend_wounds_r",
+      "name": "Specter Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "specter jacket mend wounds"
+      ]
+    },
+    {
+      "id": "specter_jacket_inferno_shield_r",
+      "name": "Specter Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "specter jacket inferno shield"
+      ]
+    },
+    {
+      "id": "specter_jacket_self_ignition_r",
+      "name": "Specter Jacket – Self Ignition R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "specter jacket self ignition"
+      ]
+    },
+    {
+      "id": "specter_shoes_dodge_f",
+      "name": "Specter Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "specter shoes dodge"
+      ]
+    },
+    {
+      "id": "specter_shoes_refreshing_sprint_f",
+      "name": "Specter Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "specter shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "specter_shoes_spectral_run_f",
+      "name": "Specter Shoes – Spectral Run F",
+      "slot": "F",
+      "cooldown_s": 60.0,
+      "phrases": [
+        "specter shoes spectral run"
+      ]
+    },
+    {
+      "id": "mistwalker_hood_energizing_shield_d",
+      "name": "Mistwalker Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "mist walker hood energizing shield"
+      ]
+    },
+    {
+      "id": "mistwalker_hood_cleanse_d",
+      "name": "Mistwalker Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "mist walker hood cleanse"
+      ]
+    },
+    {
+      "id": "mistwalker_hood_immortal_d",
+      "name": "Mistwalker Hood – Immortal D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "mist walker hood immortal"
+      ]
+    },
+    {
+      "id": "mistwalker_jacket_mend_wounds_r",
+      "name": "Mistwalker Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "mist walker jacket mend wounds"
+      ]
+    },
+    {
+      "id": "mistwalker_jacket_inferno_shield_r",
+      "name": "Mistwalker Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "mist walker jacket inferno shield"
+      ]
+    },
+    {
+      "id": "mistwalker_jacket_mist_cloud_r",
+      "name": "Mistwalker Jacket – Mist Cloud R",
+      "slot": "R",
+      "cooldown_s": 50.0,
+      "phrases": [
+        "mist walker jacket mist cloud"
+      ]
+    },
+    {
+      "id": "mistwalker_shoes_dodge_f",
+      "name": "Mistwalker Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "mist walker shoes dodge"
+      ]
+    },
+    {
+      "id": "mistwalker_shoes_refreshing_sprint_f",
+      "name": "Mistwalker Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "mist walker shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "mistwalker_shoes_after_image_f",
+      "name": "Mistwalker Shoes – After Image F",
+      "slot": "F",
+      "cooldown_s": 12.0,
+      "phrases": [
+        "mist walker shoes after image"
+      ]
+    },
+    {
+      "id": "hood_of_tenacity_energizing_shield_d",
+      "name": "Hood of Tenacity – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "hood of tenacity energizing shield"
+      ]
+    },
+    {
+      "id": "hood_of_tenacity_cleanse_d",
+      "name": "Hood of Tenacity – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "hood of tenacity cleanse"
+      ]
+    },
+    {
+      "id": "hood_of_tenacity_nasty_wounds_d",
+      "name": "Hood of Tenacity – Nasty Wounds D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "hood of tenacity nasty wounds"
+      ]
+    },
+    {
+      "id": "jacket_of_tenacity_mend_wounds_r",
+      "name": "Jacket of Tenacity – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "jacket of tenacity mend wounds"
+      ]
+    },
+    {
+      "id": "jacket_of_tenacity_inferno_shield_r",
+      "name": "Jacket of Tenacity – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "jacket of tenacity inferno shield"
+      ]
+    },
+    {
+      "id": "jacket_of_tenacity_dynamic_defense_r",
+      "name": "Jacket of Tenacity – Dynamic Defense R",
+      "slot": "R",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "jacket of tenacity dynamic defense"
+      ]
+    },
+    {
+      "id": "shoes_of_tenacity_dodge_f",
+      "name": "Shoes of Tenacity – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "shoes of tenacity dodge"
+      ]
+    },
+    {
+      "id": "shoes_of_tenacity_refreshing_sprint_f",
+      "name": "Shoes of Tenacity – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "shoes of tenacity refreshing sprint"
+      ]
+    },
+    {
+      "id": "shoes_of_tenacity_blind_spot_f",
+      "name": "Shoes of Tenacity – Blind Spot F",
+      "slot": "F",
+      "cooldown_s": 12.0,
+      "phrases": [
+        "shoes of tenacity blind spot"
+      ]
+    },
+    {
+      "id": "dragonslayer_hood_energizing_shield_d",
+      "name": "Dragonslayer Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "dragon slayer hood energizing shield"
+      ]
+    },
+    {
+      "id": "dragonslayer_hood_cleanse_d",
+      "name": "Dragonslayer Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "dragon slayer hood cleanse"
+      ]
+    },
+    {
+      "id": "dragonslayer_hood_flare_d",
+      "name": "Dragonslayer Hood – Flare D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "dragon slayer hood flare"
+      ]
+    },
+    {
+      "id": "dragonslayer_jacket_mend_wounds_r",
+      "name": "Dragonslayer Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "dragon slayer jacket mend wounds"
+      ]
+    },
+    {
+      "id": "dragonslayer_jacket_inferno_shield_r",
+      "name": "Dragonslayer Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "dragon slayer jacket inferno shield"
+      ]
+    },
+    {
+      "id": "dragonslayer_jacket_wings_of_fire_r",
+      "name": "Dragonslayer Jacket – Wings of Fire R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "dragon slayer jacket wings of fire"
+      ]
+    },
+    {
+      "id": "dragonslayer_shoes_dodge_f",
+      "name": "Dragonslayer Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "dragon slayer shoes dodge"
+      ]
+    },
+    {
+      "id": "dragonslayer_shoes_refreshing_sprint_f",
+      "name": "Dragonslayer Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "dragon slayer shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "dragonslayer_shoes_burning_momentum_f",
+      "name": "Dragonslayer Shoes – Burning Momentum F",
+      "slot": "F",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "dragon slayer shoes burning momentum"
+      ]
+    },
+    {
+      "id": "scholar_cowl_energizing_shield_d",
+      "name": "Scholar Cowl – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "scholar cowl energizing shield"
+      ]
+    },
+    {
+      "id": "scholar_cowl_force_field_d",
+      "name": "Scholar Cowl – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "scholar cowl force field"
+      ]
+    },
+    {
+      "id": "scholar_cowl_aegis_of_energy_d",
+      "name": "Scholar Cowl – Aegis of Energy D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "scholar cowl aegis of energy"
+      ]
+    },
+    {
+      "id": "scholar_robe_mend_wounds_r",
+      "name": "Scholar Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "scholar robe mend wounds"
+      ]
+    },
+    {
+      "id": "scholar_robe_frost_shield_r",
+      "name": "Scholar Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "scholar robe frost shield"
+      ]
+    },
+    {
+      "id": "scholar_robe_speed_caster_r",
+      "name": "Scholar Robe – Speed Caster R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "scholar robe speed caster"
+      ]
+    },
+    {
+      "id": "scholar_sandals_dodge_f",
+      "name": "Scholar Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "scholar sandals dodge"
+      ]
+    },
+    {
+      "id": "scholar_sandals_energetic_sprint_f",
+      "name": "Scholar Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "scholar sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "scholar_sandals_focused_run_f",
+      "name": "Scholar Sandals – Focused Run F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "scholar sandals focused run"
+      ]
+    },
+    {
+      "id": "cleric_cowl_energizing_shield_d",
+      "name": "Cleric Cowl – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "cleric cowl energizing shield"
+      ]
+    },
+    {
+      "id": "cleric_cowl_force_field_d",
+      "name": "Cleric Cowl – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cleric cowl force field"
+      ]
+    },
+    {
+      "id": "cleric_cowl_ice_block_d",
+      "name": "Cleric Cowl – Ice Block D",
+      "slot": "D",
+      "cooldown_s": 90.0,
+      "phrases": [
+        "cleric cowl ice block"
+      ]
+    },
+    {
+      "id": "cleric_robe_mend_wounds_r",
+      "name": "Cleric Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cleric robe mend wounds"
+      ]
+    },
+    {
+      "id": "cleric_robe_frost_shield_r",
+      "name": "Cleric Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "cleric robe frost shield"
+      ]
+    },
+    {
+      "id": "cleric_robe_everlasting_spirit_r",
+      "name": "Cleric Robe – Everlasting Spirit R",
+      "slot": "R",
+      "cooldown_s": 45.0,
+      "phrases": [
+        "cleric robe everlasting spirit"
+      ]
+    },
+    {
+      "id": "cleric_sandals_dodge_f",
+      "name": "Cleric Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "cleric sandals dodge"
+      ]
+    },
+    {
+      "id": "cleric_sandals_energetic_sprint_f",
+      "name": "Cleric Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cleric sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "cleric_sandals_blink_f",
+      "name": "Cleric Sandals – Blink F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "cleric sandals blink"
+      ]
+    },
+    {
+      "id": "mage_cowl_energizing_shield_d",
+      "name": "Mage Cowl – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "madge cowl energizing shield"
+      ]
+    },
+    {
+      "id": "mage_cowl_force_field_d",
+      "name": "Mage Cowl – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "madge cowl force field"
+      ]
+    },
+    {
+      "id": "mage_cowl_firebreath_d",
+      "name": "Mage Cowl – Firebreath D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "madge cowl fire breath"
+      ]
+    },
+    {
+      "id": "mage_robe_mend_wounds_r",
+      "name": "Mage Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "madge robe mend wounds"
+      ]
+    },
+    {
+      "id": "mage_robe_frost_shield_r",
+      "name": "Mage Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "madge robe frost shield"
+      ]
+    },
+    {
+      "id": "mage_robe_purging_shield_r",
+      "name": "Mage Robe – Purging Shield R",
+      "slot": "R",
+      "cooldown_s": 35.0,
+      "phrases": [
+        "madge robe purging shield"
+      ]
+    },
+    {
+      "id": "mage_sandals_dodge_f",
+      "name": "Mage Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "madge sandals dodge"
+      ]
+    },
+    {
+      "id": "mage_sandals_energetic_sprint_f",
+      "name": "Mage Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "madge sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "mage_sandals_delayed_teleport_f",
+      "name": "Mage Sandals – Delayed Teleport F",
+      "slot": "F",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "madge sandals delayed teleport"
+      ]
+    },
+    {
+      "id": "druid_cowl_energizing_shield_d",
+      "name": "Druid Cowl – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "druid cowl energizing shield"
+      ]
+    },
+    {
+      "id": "druid_cowl_force_field_d",
+      "name": "Druid Cowl – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "druid cowl force field"
+      ]
+    },
+    {
+      "id": "druid_cowl_circle_of_inspiration_d",
+      "name": "Druid Cowl – Circle of Inspiration D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "druid cowl circle of inspiration"
+      ]
+    },
+    {
+      "id": "druid_robe_mend_wounds_r",
+      "name": "Druid Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "druid robe mend wounds"
+      ]
+    },
+    {
+      "id": "druid_robe_frost_shield_r",
+      "name": "Druid Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "druid robe frost shield"
+      ]
+    },
+    {
+      "id": "druid_robe_obsessive_burst_r",
+      "name": "Druid Robe – Obsessive Burst R",
+      "slot": "R",
+      "cooldown_s": 45.0,
+      "phrases": [
+        "druid robe obsessive burst"
+      ]
+    },
+    {
+      "id": "druid_sandals_dodge_f",
+      "name": "Druid Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "druid sandals dodge"
+      ]
+    },
+    {
+      "id": "druid_sandals_energetic_sprint_f",
+      "name": "Druid Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "druid sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "druid_sandals_frost_walk_f",
+      "name": "Druid Sandals – Frost Walk F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "druid sandals frost walk"
+      ]
+    },
+    {
+      "id": "fiend_cowl_energizing_shield_d",
+      "name": "Fiend Cowl – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "fiend cowl energizing shield"
+      ]
+    },
+    {
+      "id": "fiend_cowl_force_field_d",
+      "name": "Fiend Cowl – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fiend cowl force field"
+      ]
+    },
+    {
+      "id": "fiend_cowl_purge_d",
+      "name": "Fiend Cowl – Purge D",
+      "slot": "D",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "fiend cowl purge"
+      ]
+    },
+    {
+      "id": "fiend_robe_mend_wounds_r",
+      "name": "Fiend Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fiend robe mend wounds"
+      ]
+    },
+    {
+      "id": "fiend_robe_frost_shield_r",
+      "name": "Fiend Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "fiend robe frost shield"
+      ]
+    },
+    {
+      "id": "fiend_robe_fear_aura_r",
+      "name": "Fiend Robe – Fear Aura R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fiend robe fear aura"
+      ]
+    },
+    {
+      "id": "fiend_sandals_dodge_f",
+      "name": "Fiend Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "fiend sandals dodge"
+      ]
+    },
+    {
+      "id": "fiend_sandals_energetic_sprint_f",
+      "name": "Fiend Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fiend sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "fiend_sandals_position_swap_f",
+      "name": "Fiend Sandals – Position Swap F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "fiend sandals position swap"
+      ]
+    },
+    {
+      "id": "cultist_cowl_energizing_shield_d",
+      "name": "Cultist Cowl – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "cultist cowl energizing shield"
+      ]
+    },
+    {
+      "id": "cultist_cowl_force_field_d",
+      "name": "Cultist Cowl – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cultist cowl force field"
+      ]
+    },
+    {
+      "id": "cultist_cowl_inner_corruption_d",
+      "name": "Cultist Cowl – Inner Corruption D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cultist cowl inner corruption"
+      ]
+    },
+    {
+      "id": "cultist_robe_mend_wounds_r",
+      "name": "Cultist Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cultist robe mend wounds"
+      ]
+    },
+    {
+      "id": "cultist_robe_frost_shield_r",
+      "name": "Cultist Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "cultist robe frost shield"
+      ]
+    },
+    {
+      "id": "cultist_robe_levitate_r",
+      "name": "Cultist Robe – Levitate R",
+      "slot": "R",
+      "cooldown_s": 45.0,
+      "phrases": [
+        "cultist robe levitate"
+      ]
+    },
+    {
+      "id": "cultist_sandals_dodge_f",
+      "name": "Cultist Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "cultist sandals dodge"
+      ]
+    },
+    {
+      "id": "cultist_sandals_energetic_sprint_f",
+      "name": "Cultist Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cultist sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "cultist_sandals_rotten_ground_f",
+      "name": "Cultist Sandals – Rotten Ground F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cultist sandals rotten ground"
+      ]
+    },
+    {
+      "id": "feyscale_hat_energizing_shield_d",
+      "name": "Feyscale Hat – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "fey scale hat energizing shield"
+      ]
+    },
+    {
+      "id": "feyscale_hat_force_field_d",
+      "name": "Feyscale Hat – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fey scale hat force field"
+      ]
+    },
+    {
+      "id": "feyscale_hat_hyper_focus_d",
+      "name": "Feyscale Hat – Hyper Focus D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "fey scale hat hyper focus"
+      ]
+    },
+    {
+      "id": "feyscale_robe_mend_wounds_r",
+      "name": "Feyscale Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fey scale robe mend wounds"
+      ]
+    },
+    {
+      "id": "feyscale_robe_frost_shield_r",
+      "name": "Feyscale Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "fey scale robe frost shield"
+      ]
+    },
+    {
+      "id": "feyscale_robe_wild_magic_r",
+      "name": "Feyscale Robe – Wild Magic R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "fey scale robe wild magic"
+      ]
+    },
+    {
+      "id": "feyscale_sandals_dodge_f",
+      "name": "Feyscale Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "fey scale sandals dodge"
+      ]
+    },
+    {
+      "id": "feyscale_sandals_energetic_sprint_f",
+      "name": "Feyscale Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fey scale sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "feyscale_sandals_ethereal_form_f",
+      "name": "Feyscale Sandals – Ethereal Form F",
+      "slot": "F",
+      "cooldown_s": 45.0,
+      "phrases": [
+        "fey scale sandals ethereal form"
+      ]
+    },
+    {
+      "id": "cowl_of_purity_energizing_shield_d",
+      "name": "Cowl of Purity – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "cowl of purity energizing shield"
+      ]
+    },
+    {
+      "id": "cowl_of_purity_force_field_d",
+      "name": "Cowl of Purity – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cowl of purity force field"
+      ]
+    },
+    {
+      "id": "cowl_of_purity_avalonian_beam_d",
+      "name": "Cowl of Purity – Avalonian Beam D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cowl of purity avalon ian beam"
+      ]
+    },
+    {
+      "id": "robe_of_purity_mend_wounds_r",
+      "name": "Robe of Purity – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "robe of purity mend wounds"
+      ]
+    },
+    {
+      "id": "robe_of_purity_frost_shield_r",
+      "name": "Robe of Purity – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "robe of purity frost shield"
+      ]
+    },
+    {
+      "id": "robe_of_purity_energy_emission_r",
+      "name": "Robe of Purity – Energy Emission R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "robe of purity energy emission"
+      ]
+    },
+    {
+      "id": "sandals_of_purity_dodge_f",
+      "name": "Sandals of Purity – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "sandals of purity dodge"
+      ]
+    },
+    {
+      "id": "sandals_of_purity_energetic_sprint_f",
+      "name": "Sandals of Purity – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "sandals of purity energetic sprint"
+      ]
+    },
+    {
+      "id": "sandals_of_purity_hover_f",
+      "name": "Sandals of Purity – Hover F",
+      "slot": "F",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "sandals of purity hover"
+      ]
+    },
+    {
+      "id": "royal_cowl_energizing_shield_d",
+      "name": "Royal Cowl – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "royal cowl energizing shield"
+      ]
+    },
+    {
+      "id": "royal_cowl_force_field_d",
+      "name": "Royal Cowl – Force Field D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal cowl force field"
+      ]
+    },
+    {
+      "id": "royal_cowl_perpetual_energy_d",
+      "name": "Royal Cowl – Perpetual Energy D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal cowl perpetual energy"
+      ]
+    },
+    {
+      "id": "royal_robe_mend_wounds_r",
+      "name": "Royal Robe – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal robe mend wounds"
+      ]
+    },
+    {
+      "id": "royal_robe_frost_shield_r",
+      "name": "Royal Robe – Frost Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "royal robe frost shield"
+      ]
+    },
+    {
+      "id": "royal_robe_magic_rune_r",
+      "name": "Royal Robe – Magic Rune R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "royal robe magic rune"
+      ]
+    },
+    {
+      "id": "royal_sandals_dodge_f",
+      "name": "Royal Sandals – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "royal sandals dodge"
+      ]
+    },
+    {
+      "id": "royal_sandals_energetic_sprint_f",
+      "name": "Royal Sandals – Energetic Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal sandals energetic sprint"
+      ]
+    },
+    {
+      "id": "royal_sandals_defenseless_rush_f",
+      "name": "Royal Sandals – Defenseless Rush F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal sandals defenseless rush"
+      ]
+    },
+    {
+      "id": "royal_hood_energizing_shield_d",
+      "name": "Royal Hood – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "royal hood energizing shield"
+      ]
+    },
+    {
+      "id": "royal_hood_cleanse_d",
+      "name": "Royal Hood – Cleanse D",
+      "slot": "D",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "royal hood cleanse"
+      ]
+    },
+    {
+      "id": "royal_hood_growing_rage_d",
+      "name": "Royal Hood – Growing Rage D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "royal hood growing rage"
+      ]
+    },
+    {
+      "id": "royal_jacket_mend_wounds_r",
+      "name": "Royal Jacket – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal jacket mend wounds"
+      ]
+    },
+    {
+      "id": "royal_jacket_inferno_shield_r",
+      "name": "Royal Jacket – Inferno Shield R",
+      "slot": "R",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "royal jacket inferno shield"
+      ]
+    },
+    {
+      "id": "royal_jacket_royal_banner_r",
+      "name": "Royal Jacket – Royal Banner R",
+      "slot": "R",
+      "cooldown_s": 50.0,
+      "phrases": [
+        "royal jacket royal banner"
+      ]
+    },
+    {
+      "id": "royal_shoes_dodge_f",
+      "name": "Royal Shoes – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "royal shoes dodge"
+      ]
+    },
+    {
+      "id": "royal_shoes_refreshing_sprint_f",
+      "name": "Royal Shoes – Refreshing Sprint F",
+      "slot": "F",
+      "cooldown_s": 32.5,
+      "phrases": [
+        "royal shoes refreshing sprint"
+      ]
+    },
+    {
+      "id": "royal_shoes_evasive_jump_f",
+      "name": "Royal Shoes – Evasive Jump F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "royal shoes evasive jump"
+      ]
+    },
+    {
+      "id": "royal_helmet_energizing_shield_d",
+      "name": "Royal Helmet – Energizing Shield D",
+      "slot": "D",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "royal helmet energizing shield"
+      ]
+    },
+    {
+      "id": "royal_helmet_stone_skin_d",
+      "name": "Royal Helmet – Stone Skin D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal helmet stone skin"
+      ]
+    },
+    {
+      "id": "royal_helmet_ballista_support_fire_d",
+      "name": "Royal Helmet – Ballista Support Fire D",
+      "slot": "D",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal helmet ball ista support fire"
+      ]
+    },
+    {
+      "id": "royal_armor_mend_wounds_r",
+      "name": "Royal Armor – Mend Wounds R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal armor mend wounds"
+      ]
+    },
+    {
+      "id": "royal_armor_taunt_r",
+      "name": "Royal Armor – Taunt R",
+      "slot": "R",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "royal armor taunt"
+      ]
+    },
+    {
+      "id": "royal_armor_energy_source_r",
+      "name": "Royal Armor – Energy Source R",
+      "slot": "R",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal armor energy source"
+      ]
+    },
+    {
+      "id": "royal_boots_dodge_f",
+      "name": "Royal Boots – Dodge F",
+      "slot": "F",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "royal boots dodge"
+      ]
+    },
+    {
+      "id": "royal_boots_rejuvenating_sprint_f",
+      "name": "Royal Boots – Rejuvenating Sprint F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal boots rejuvenating sprint"
+      ]
+    },
+    {
+      "id": "royal_boots_royal_march_f",
+      "name": "Royal Boots – Royal March F",
+      "slot": "F",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "royal boots royal march"
+      ]
+    },
+    {
+      "id": "bow_e",
+      "name": "Bow E",
+      "slot": "E",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "bow e",
+        "bow"
+      ]
+    },
+    {
+      "id": "warbow_e",
+      "name": "Warbow E",
+      "slot": "E",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "war bow e",
+        "war bow"
+      ]
+    },
+    {
+      "id": "longbow_e",
+      "name": "Longbow E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "longbow e",
+        "longbow"
+      ]
+    },
+    {
+      "id": "whispering_bow_e",
+      "name": "Whispering Bow E",
+      "slot": "E",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "whispering bow e",
+        "whispering bow"
+      ]
+    },
+    {
+      "id": "wailing_bow_e",
+      "name": "Wailing Bow E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "wailing bow e",
+        "wailing bow"
+      ]
+    },
+    {
+      "id": "bow_of_badon_e",
+      "name": "Bow of Badon E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "bow of baden e",
+        "bow of baden"
+      ]
+    },
+    {
+      "id": "mistpiercer_e",
+      "name": "Mistpiercer E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "mist pierce e",
+        "mist pierce"
+      ]
+    },
+    {
+      "id": "skystrider_bow_e",
+      "name": "Skystrider Bow E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "sky strider bow e",
+        "sky strider bow"
+      ]
+    },
+    {
+      "id": "crossbow_e",
+      "name": "Crossbow E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "crossbow e",
+        "crossbow"
+      ]
+    },
+    {
+      "id": "heavy_crossbow_e",
+      "name": "Heavy Crossbow E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "heavy crossbow e",
+        "heavy crossbow"
+      ]
+    },
+    {
+      "id": "light_crossbow_e",
+      "name": "Light Crossbow E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "light crossbow e",
+        "light crossbow"
+      ]
+    },
+    {
+      "id": "weeping_repeater_e",
+      "name": "Weeping Repeater E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "weeping repeater e",
+        "weeping repeater"
+      ]
+    },
+    {
+      "id": "boltcasters_e",
+      "name": "Boltcasters E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "bolt casters e",
+        "bolt casters"
+      ]
+    },
+    {
+      "id": "siegebow_e",
+      "name": "Siegebow E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "siege bow e",
+        "siege bow"
+      ]
+    },
+    {
+      "id": "energy_shaper_e",
+      "name": "Energy Shaper E",
+      "slot": "E",
+      "cooldown_s": 35.0,
+      "phrases": [
+        "energy shaper e",
+        "energy shaper"
+      ]
+    },
+    {
+      "id": "arclight_blasters_e",
+      "name": "Arclight Blasters E",
+      "slot": "E",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "arclight blasters e",
+        "arclight blasters"
+      ]
+    },
+    {
+      "id": "cursed_staff_e",
+      "name": "Cursed Staff E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "cursed staff e",
+        "cursed staff"
+      ]
+    },
+    {
+      "id": "great_cursed_staff_e",
+      "name": "Great Cursed Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "great cursed staff e",
+        "great cursed staff"
+      ]
+    },
+    {
+      "id": "demonic_staff_e",
+      "name": "Demonic Staff E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "demonic staff e",
+        "demonic staff"
+      ]
+    },
+    {
+      "id": "lifecurse_staff_e",
+      "name": "Lifecurse Staff E",
+      "slot": "E",
+      "cooldown_s": 63.0,
+      "phrases": [
+        "life curse staff e",
+        "life curse staff"
+      ]
+    },
+    {
+      "id": "cursed_skull_e",
+      "name": "Cursed Skull E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "cursed skull e",
+        "cursed skull"
+      ]
+    },
+    {
+      "id": "damnation_staff_e",
+      "name": "Damnation Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "damnation staff e",
+        "damnation staff"
+      ]
+    },
+    {
+      "id": "shadowcaller_e",
+      "name": "Shadowcaller E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "shadow caller e",
+        "shadow caller"
+      ]
+    },
+    {
+      "id": "rotcaller_staff_e",
+      "name": "Rotcaller Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "rot caller staff e",
+        "rot caller staff"
+      ]
+    },
+    {
+      "id": "fire_staff_e",
+      "name": "Fire Staff E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "fire staff e",
+        "fire staff"
+      ]
+    },
+    {
+      "id": "great_fire_staff_e",
+      "name": "Great Fire Staff E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "great fire staff e",
+        "great fire staff"
+      ]
+    },
+    {
+      "id": "infernal_staff_e",
+      "name": "Infernal Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "infernal staff e",
+        "infernal staff"
+      ]
+    },
+    {
+      "id": "wildfire_staff_e",
+      "name": "Wildfire Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "wildfire staff e",
+        "wildfire staff"
+      ]
+    },
+    {
+      "id": "brimstone_staff_e",
+      "name": "Brimstone Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "brimstone staff e",
+        "brimstone staff"
+      ]
+    },
+    {
+      "id": "blazing_staff_e",
+      "name": "Blazing Staff E",
+      "slot": "E",
+      "cooldown_s": 35.0,
+      "phrases": [
+        "blazing staff e",
+        "blazing staff"
+      ]
+    },
+    {
+      "id": "dawnsong_e",
+      "name": "Dawnsong E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "dawn song e",
+        "dawn song"
+      ]
+    },
+    {
+      "id": "flamewalker_staff_e",
+      "name": "Flamewalker Staff E",
+      "slot": "E",
+      "cooldown_s": 40.0,
+      "phrases": [
+        "flame walker staff e",
+        "flame walker staff"
+      ]
+    },
+    {
+      "id": "frost_staff_e",
+      "name": "Frost Staff E",
+      "slot": "E",
+      "cooldown_s": 18.0,
+      "phrases": [
+        "frost staff e",
+        "frost staff"
+      ]
+    },
+    {
+      "id": "great_frost_staff_e",
+      "name": "Great Frost Staff E",
+      "slot": "E",
+      "cooldown_s": 1.0,
+      "phrases": [
+        "great frost staff e",
+        "great frost staff"
+      ]
+    },
+    {
+      "id": "glacial_staff_e",
+      "name": "Glacial Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "glacial staff e",
+        "glacial staff"
+      ]
+    },
+    {
+      "id": "hoarfrost_staff_e",
+      "name": "Hoarfrost Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "hoar frost staff e",
+        "hoar frost staff"
+      ]
+    },
+    {
+      "id": "icicle_staff_e",
+      "name": "Icicle Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "icicle staff e",
+        "icicle staff"
+      ]
+    },
+    {
+      "id": "permafrost_prism_e",
+      "name": "Permafrost Prism E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "permafrost prism e",
+        "permafrost prism"
+      ]
+    },
+    {
+      "id": "chillhowl_e",
+      "name": "Chillhowl E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "chill howl e",
+        "chill howl"
+      ]
+    },
+    {
+      "id": "arctic_staff_e",
+      "name": "Arctic Staff E",
+      "slot": "E",
+      "cooldown_s": 12.0,
+      "phrases": [
+        "arctic staff e",
+        "arctic staff"
+      ]
+    },
+    {
+      "id": "arcane_staff_e",
+      "name": "Arcane Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "arcane staff e",
+        "arcane staff"
+      ]
+    },
+    {
+      "id": "great_arcane_staff_e",
+      "name": "Great Arcane Staff E",
+      "slot": "E",
+      "cooldown_s": 72.0,
+      "phrases": [
+        "great arcane staff e",
+        "great arcane staff"
+      ]
+    },
+    {
+      "id": "enigmatic_staff_e",
+      "name": "Enigmatic Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "enigmatic staff e",
+        "enigmatic staff"
+      ]
+    },
+    {
+      "id": "witchwork_staff_e",
+      "name": "Witchwork Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "witch work staff e",
+        "witch work staff"
+      ]
+    },
+    {
+      "id": "occult_staff_e",
+      "name": "Occult Staff E",
+      "slot": "E",
+      "cooldown_s": 44.0,
+      "phrases": [
+        "occult staff e",
+        "occult staff"
+      ]
+    },
+    {
+      "id": "malevolent_locus_e",
+      "name": "Malevolent Locus E",
+      "slot": "E",
+      "cooldown_s": 62.0,
+      "phrases": [
+        "malevolent locus e",
+        "malevolent locus"
+      ]
+    },
+    {
+      "id": "evensong_e",
+      "name": "Evensong E",
+      "slot": "E",
+      "cooldown_s": 38.0,
+      "phrases": [
+        "evensong e",
+        "evensong"
+      ]
+    },
+    {
+      "id": "astral_staff_e",
+      "name": "Astral Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "astral staff e",
+        "astral staff"
+      ]
+    },
+    {
+      "id": "holy_staff_e",
+      "name": "Holy Staff E",
+      "slot": "E",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "holy staff e",
+        "holy staff"
+      ]
+    },
+    {
+      "id": "great_holy_staff_e",
+      "name": "Great Holy Staff E",
+      "slot": "E",
+      "cooldown_s": 18.0,
+      "phrases": [
+        "great holy staff e",
+        "great holy staff"
+      ]
+    },
+    {
+      "id": "divine_staff_e",
+      "name": "Divine Staff E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "divine staff e",
+        "divine staff"
+      ]
+    },
+    {
+      "id": "lifetouch_staff_e",
+      "name": "Lifetouch Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "lifetouch staff e",
+        "lifetouch staff"
+      ]
+    },
+    {
+      "id": "fallen_staff_e",
+      "name": "Fallen Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "fallen staff e",
+        "fallen staff"
+      ]
+    },
+    {
+      "id": "redemption_staff_e",
+      "name": "Redemption Staff E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "redemption staff e",
+        "redemption staff"
+      ]
+    },
+    {
+      "id": "hallowfall_e",
+      "name": "Hallowfall E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "hallow fall e",
+        "hallow fall"
+      ]
+    },
+    {
+      "id": "exalted_staff_e",
+      "name": "Exalted Staff E",
+      "slot": "E",
+      "cooldown_s": 65.0,
+      "phrases": [
+        "exalted staff e",
+        "exalted staff"
+      ]
+    },
+    {
+      "id": "nature_staff_e",
+      "name": "Nature Staff E",
+      "slot": "E",
+      "cooldown_s": 18.0,
+      "phrases": [
+        "nature staff e",
+        "nature staff"
+      ]
+    },
+    {
+      "id": "great_nature_staff_e",
+      "name": "Great Nature Staff E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "great nature staff e",
+        "great nature staff"
+      ]
+    },
+    {
+      "id": "wild_staff_e",
+      "name": "Wild Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "wild staff e",
+        "wild staff"
+      ]
+    },
+    {
+      "id": "druidic_staff_e",
+      "name": "Druidic Staff E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "druid staff e",
+        "druid staff"
+      ]
+    },
+    {
+      "id": "blight_staff_e",
+      "name": "Blight Staff E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "blight staff e",
+        "blight staff"
+      ]
+    },
+    {
+      "id": "rampant_staff_e",
+      "name": "Rampant Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "rampant staff e",
+        "rampant staff"
+      ]
+    },
+    {
+      "id": "ironroot_staff_e",
+      "name": "Ironroot Staff E",
+      "slot": "E",
+      "cooldown_s": 12.0,
+      "phrases": [
+        "iron root staff e",
+        "iron root staff"
+      ]
+    },
+    {
+      "id": "forgebark_staff_e",
+      "name": "Forgebark Staff E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "forge bark staff e",
+        "forge bark staff"
+      ]
+    },
+    {
+      "id": "dagger_e",
+      "name": "Dagger E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "dagger e",
+        "dagger"
+      ]
+    },
+    {
+      "id": "dagger_pair_e",
+      "name": "Dagger Pair E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "dagger pair e",
+        "dagger pair"
+      ]
+    },
+    {
+      "id": "claws_e",
+      "name": "Claws E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "claws e",
+        "claws"
+      ]
+    },
+    {
+      "id": "bloodletter_e",
+      "name": "Bloodletter E",
+      "slot": "E",
+      "cooldown_s": 35.0,
+      "phrases": [
+        "blood letter e",
+        "blood letter"
+      ]
+    },
+    {
+      "id": "demonfang_e",
+      "name": "Demonfang E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "demon fang e",
+        "demon fang"
+      ]
+    },
+    {
+      "id": "black_hands_e",
+      "name": "Black Hands E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "black hands e",
+        "black hands"
+      ]
+    },
+    {
+      "id": "deathgivers_e",
+      "name": "Deathgivers E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "death givers e",
+        "death givers"
+      ]
+    },
+    {
+      "id": "bridled_fury_e",
+      "name": "Bridled Fury E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "bridled fury e",
+        "bridled fury"
+      ]
+    },
+    {
+      "id": "twin_slayers_e",
+      "name": "Twin Slayers E",
+      "slot": "E",
+      "cooldown_s": 1.0,
+      "phrases": [
+        "twin slayers e",
+        "twin slayers"
+      ]
+    },
+    {
+      "id": "spear_e",
+      "name": "Spear E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "spear e",
+        "spear"
+      ]
+    },
+    {
+      "id": "pike_e",
+      "name": "Pike E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "pike e",
+        "pike"
+      ]
+    },
+    {
+      "id": "glaive_e",
+      "name": "Glaive E",
+      "slot": "E",
+      "cooldown_s": 18.0,
+      "phrases": [
+        "glade e",
+        "glade"
+      ]
+    },
+    {
+      "id": "heron_spear_e",
+      "name": "Heron Spear E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "heron spear e",
+        "heron spear"
+      ]
+    },
+    {
+      "id": "spirithunter_e",
+      "name": "Spirithunter E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "spirit hunter e",
+        "spirit hunter"
+      ]
+    },
+    {
+      "id": "trinity_spear_e",
+      "name": "Trinity Spear E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "trinity spear e",
+        "trinity spear"
+      ]
+    },
+    {
+      "id": "daybreaker_e",
+      "name": "Daybreaker E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "day breaker e",
+        "day breaker"
+      ]
+    },
+    {
+      "id": "rift_glaive_e",
+      "name": "Rift Glaive E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "rift glade e",
+        "rift glade"
+      ]
+    },
+    {
+      "id": "battleaxe_e",
+      "name": "Battleaxe E",
+      "slot": "E",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "battle axe e",
+        "battle axe"
+      ]
+    },
+    {
+      "id": "greataxe_e",
+      "name": "Greataxe E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "great axe e",
+        "great axe"
+      ]
+    },
+    {
+      "id": "halberd_e",
+      "name": "Halberd E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "hal bird e",
+        "hal bird"
+      ]
+    },
+    {
+      "id": "carrioncaller_e",
+      "name": "Carrioncaller E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "carrion caller e",
+        "carrion caller"
+      ]
+    },
+    {
+      "id": "infernal_scythe_e",
+      "name": "Infernal Scythe E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "infernal scythe e",
+        "infernal scythe"
+      ]
+    },
+    {
+      "id": "bear_paws_e",
+      "name": "Bear Paws E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "bear paws e",
+        "bear paws"
+      ]
+    },
+    {
+      "id": "realmbreaker_e",
+      "name": "Realmbreaker E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "realm breaker e",
+        "realm breaker"
+      ]
+    },
+    {
+      "id": "crystal_reaper_e",
+      "name": "Crystal Reaper E",
+      "slot": "E",
+      "cooldown_s": 3.0,
+      "phrases": [
+        "crystal reaper e",
+        "crystal reaper"
+      ]
+    },
+    {
+      "id": "broadsword_e",
+      "name": "Broadsword E",
+      "slot": "E",
+      "cooldown_s": 12.0,
+      "phrases": [
+        "broadsword e",
+        "broadsword"
+      ]
+    },
+    {
+      "id": "claymore_e",
+      "name": "Claymore E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "claymore e",
+        "claymore"
+      ]
+    },
+    {
+      "id": "dual_swords_e",
+      "name": "Dual Swords E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "dual swords e",
+        "dual swords"
+      ]
+    },
+    {
+      "id": "clarent_blade_e",
+      "name": "Clarent Blade E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "clarence blade e",
+        "clarence blade"
+      ]
+    },
+    {
+      "id": "carving_sword_e",
+      "name": "Carving Sword E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "carving sword e",
+        "carving sword"
+      ]
+    },
+    {
+      "id": "galatine_pair_e",
+      "name": "Galatine Pair E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "gala teen pair e",
+        "gala teen pair"
+      ]
+    },
+    {
+      "id": "kingmaker_e",
+      "name": "Kingmaker E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "kingmaker e",
+        "kingmaker"
+      ]
+    },
+    {
+      "id": "quarterstaff_e",
+      "name": "Quarterstaff E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "quarter staff e",
+        "quarter staff"
+      ]
+    },
+    {
+      "id": "iron_clad_staff_e",
+      "name": "Iron-clad Staff E",
+      "slot": "E",
+      "cooldown_s": 29.0,
+      "phrases": [
+        "iron clad staff e",
+        "iron clad staff"
+      ]
+    },
+    {
+      "id": "double_bladed_staff_e",
+      "name": "Double Bladed Staff E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "double bladed staff e",
+        "double bladed staff"
+      ]
+    },
+    {
+      "id": "black_monk_staff_e",
+      "name": "Black Monk Staff E",
+      "slot": "E",
+      "cooldown_s": 26.8,
+      "phrases": [
+        "black monk staff e",
+        "black monk staff"
+      ]
+    },
+    {
+      "id": "soulscythe_e",
+      "name": "Soulscythe E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "soul scythe e",
+        "soul scythe"
+      ]
+    },
+    {
+      "id": "staff_of_balance_e",
+      "name": "Staff of Balance E",
+      "slot": "E",
+      "cooldown_s": 37.5,
+      "phrases": [
+        "staff of balance e",
+        "staff of balance"
+      ]
+    },
+    {
+      "id": "grailseeker_e",
+      "name": "Grailseeker E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "grail seeker e",
+        "grail seeker"
+      ]
+    },
+    {
+      "id": "phantom_twinblade_e",
+      "name": "Phantom Twinblade E",
+      "slot": "E",
+      "cooldown_s": 1.0,
+      "phrases": [
+        "phantom twin blade e",
+        "phantom twin blade"
+      ]
+    },
+    {
+      "id": "hammer_e",
+      "name": "Hammer E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "hammer e",
+        "hammer"
+      ]
+    },
+    {
+      "id": "polehammer_e",
+      "name": "Polehammer E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "pole hammer e",
+        "pole hammer"
+      ]
+    },
+    {
+      "id": "great_hammer_e",
+      "name": "Great Hammer E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "great hammer e",
+        "great hammer"
+      ]
+    },
+    {
+      "id": "tombhammer_e",
+      "name": "Tombhammer E",
+      "slot": "E",
+      "cooldown_s": 14.0,
+      "phrases": [
+        "tomb hammer e",
+        "tomb hammer"
+      ]
+    },
+    {
+      "id": "forge_hammers_e",
+      "name": "Forge Hammers E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "forge hammers e",
+        "forge hammers"
+      ]
+    },
+    {
+      "id": "grovekeeper_e",
+      "name": "Grovekeeper E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "grove keeper e",
+        "grove keeper"
+      ]
+    },
+    {
+      "id": "hand_of_justice_e",
+      "name": "Hand of Justice E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "hand of justice e",
+        "hand of justice"
+      ]
+    },
+    {
+      "id": "truebolt_hammer_e",
+      "name": "Truebolt Hammer E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "true bolt hammer e",
+        "true bolt hammer"
+      ]
+    },
+    {
+      "id": "mace_e",
+      "name": "Mace E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "mace e",
+        "mace"
+      ]
+    },
+    {
+      "id": "heavy_mace_e",
+      "name": "Heavy Mace E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "heavy mace e",
+        "heavy mace"
+      ]
+    },
+    {
+      "id": "morning_star_e",
+      "name": "Morning Star E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "morning star e",
+        "morning star"
+      ]
+    },
+    {
+      "id": "bedrock_mace_e",
+      "name": "Bedrock Mace E",
+      "slot": "E",
+      "cooldown_s": 27.5,
+      "phrases": [
+        "bedrock mace e",
+        "bedrock mace"
+      ]
+    },
+    {
+      "id": "incubus_mace_e",
+      "name": "Incubus Mace E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "incubus mace e",
+        "incubus mace"
+      ]
+    },
+    {
+      "id": "camlann_mace_e",
+      "name": "Camlann Mace E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "cam lan mace e",
+        "cam lan mace"
+      ]
+    },
+    {
+      "id": "oathkeepers_e",
+      "name": "Oathkeepers E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "oath keepers e",
+        "oath keepers"
+      ]
+    },
+    {
+      "id": "dreadstorm_monarch_e",
+      "name": "Dreadstorm Monarch E",
+      "slot": "E",
+      "cooldown_s": 1.5,
+      "phrases": [
+        "dread storm monarch e",
+        "dread storm monarch"
+      ]
+    },
+    {
+      "id": "brawler_gloves_e",
+      "name": "Brawler Gloves E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "brawler gloves e",
+        "brawler gloves"
+      ]
+    },
+    {
+      "id": "battle_bracers_e",
+      "name": "Battle Bracers E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "battle bracer e",
+        "battle bracer"
+      ]
+    },
+    {
+      "id": "spiked_gauntlets_e",
+      "name": "Spiked Gauntlets E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "spiked gauntlets e",
+        "spiked gauntlets"
+      ]
+    },
+    {
+      "id": "ursine_maulers_e",
+      "name": "Ursine Maulers E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "er sign mauler e",
+        "er sign mauler"
+      ]
+    },
+    {
+      "id": "hellfire_hands_e",
+      "name": "Hellfire Hands E",
+      "slot": "E",
+      "cooldown_s": 20.0,
+      "phrases": [
+        "hellfire hands e",
+        "hellfire hands"
+      ]
+    },
+    {
+      "id": "ravenstrike_cestus_e",
+      "name": "Ravenstrike Cestus E",
+      "slot": "E",
+      "cooldown_s": 30.0,
+      "phrases": [
+        "raven strike says us e",
+        "raven strike says us"
+      ]
+    },
+    {
+      "id": "fists_of_avalon_e",
+      "name": "Fists of Avalon E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "fists of avalon e",
+        "fists of avalon"
+      ]
+    },
+    {
+      "id": "forcepulse_bracers_e",
+      "name": "Forcepulse Bracers E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "force pulse bracer e",
+        "force pulse bracer"
+      ]
+    },
+    {
+      "id": "prowling_staff_e",
+      "name": "Prowling Staff E",
+      "slot": "E",
+      "cooldown_s": 5.0,
+      "phrases": [
+        "prowling staff e",
+        "prowling staff"
+      ]
+    },
+    {
+      "id": "rootbound_staff_e",
+      "name": "Rootbound Staff E",
+      "slot": "E",
+      "cooldown_s": 5.0,
+      "phrases": [
+        "root bound staff e",
+        "root bound staff"
+      ]
+    },
+    {
+      "id": "primal_staff_e",
+      "name": "Primal Staff E",
+      "slot": "E",
+      "cooldown_s": 10.0,
+      "phrases": [
+        "primal staff e",
+        "primal staff"
+      ]
+    },
+    {
+      "id": "bloodmoon_staff_e",
+      "name": "Bloodmoon Staff E",
+      "slot": "E",
+      "cooldown_s": 8.0,
+      "phrases": [
+        "blood moon staff e",
+        "blood moon staff"
+      ]
+    },
+    {
+      "id": "hellspawn_staff_e",
+      "name": "Hellspawn Staff E",
+      "slot": "E",
+      "cooldown_s": 8.0,
+      "phrases": [
+        "hell spawn staff e",
+        "hell spawn staff"
+      ]
+    },
+    {
+      "id": "earthrune_staff_e",
+      "name": "Earthrune Staff E",
+      "slot": "E",
+      "cooldown_s": 25.0,
+      "phrases": [
+        "earth rune staff e",
+        "earth rune staff"
+      ]
+    },
+    {
+      "id": "lightcaller_e",
+      "name": "Lightcaller E",
+      "slot": "E",
+      "cooldown_s": 15.0,
+      "phrases": [
+        "light caller e",
+        "light caller"
+      ]
+    },
+    {
+      "id": "stillgaze_staff_e",
+      "name": "Stillgaze Staff E",
+      "slot": "E",
+      "cooldown_s": 12.0,
+      "phrases": [
+        "still gaze staff e",
+        "still gaze staff"
+      ]
+    }
+  ]
 }

@@ -51,8 +51,24 @@ editor shares ability lists as JSON.
 .venv/Scripts/python -m pvptimer
 ```
 
-To ship your ability list as the default for everyone: Editor → **Export…**, save the
-file over `src/pvptimer/data/default_abilities.json`, then rebuild.
+### The built-in ability list
+
+`src/pvptimer/data/default_abilities.json` ships with every build. It is generated from the
+game data that the community extracts after each patch
+([ao-data/ao-bin-dumps](https://github.com/ao-data/ao-bin-dumps)): each weapon's E ability, plus
+the chest (R), helmet (D) and boots (F) abilities, with spoken phrases made from the item names.
+
+```bash
+.venv/Scripts/python scripts/import_game_data.py
+```
+
+Re-run it after a game patch. It prints a summary and writes `build/import_report.txt`, which
+lists phrases with words the speech model doesn't know (add a sound-alike to `SPOKEN` in
+`src/pvptimer/gamedata.py`), cooldowns read from a recast stage (worth checking in game), and
+anything skipped. Cooldowns are base values; cooldown-reduction gear makes the real ones shorter.
+
+To ship a hand-made list instead: Editor → **Export…**, save the file over
+`src/pvptimer/data/default_abilities.json`, then rebuild.
 
 ### Building a release
 

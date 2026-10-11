@@ -1,3 +1,4 @@
+import shutil
 from dataclasses import replace
 
 import pytest
@@ -6,6 +7,16 @@ from PySide6.QtWidgets import QApplication
 from pvptimer import app as app_module
 from pvptimer import paths
 from pvptimer.settings import load_settings
+
+
+@pytest.fixture(autouse=True)
+def empty_builtin_list(tmp_path, monkeypatch):
+    """App tests start from an empty built-in ability list, whatever the shipped one contains."""
+    data = tmp_path / "data"
+    data.mkdir()
+    (data / "default_abilities.json").write_text('{"version": 1, "abilities": []}', encoding="utf-8")
+    shutil.copy(paths.data_dir() / "ready.wav", data / "ready.wav")
+    monkeypatch.setattr(app_module.paths, "data_dir", lambda: data)
 
 
 @pytest.fixture
